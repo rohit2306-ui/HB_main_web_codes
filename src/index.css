@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+  --color-accent-rgb: theme("colors.themehover");
+  --color-bento-rgb: theme("colors.bentohover");
+
+  /* font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  scroll-behavior: smooth;
+  caret-color: theme("colors.theme.500"); /* A strong, standard green */
+  /* color: rgba(40, 167, 69, 0.555); */ /* Equivalent to the green caret color, but with transparency */
+}
+
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+
+/* The main scrollbar container */
+::-webkit-scrollbar {
+  width: 4px; /* Reduced width for a smaller, thinner look */
+  height: 8px; /* Important for horizontal scrollbars if needed */
+}
+
+/* The scrollbar track (the background) */
+::-webkit-scrollbar-track {
+  background-color: #102a1c; /* A very dark, deep green for depth */
+  border-radius: 8px; /* Matches the scrollbar width */
+}
+
+/* The scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  /* A subtle linear gradient for a premium look */
+ background: linear-gradient(
+  180deg,
+  theme("colors.theme.500"),
+  theme("colors.theme.600")
+);
+ /* Vibrant green to dark green */
+  border-radius: 8px;
+  /* Enhanced glow effect that truly stands out */
+  box-shadow: 0 0 12px rgba(theme("colors.themehover")); /* Larger, more intense green glow */
+  transition: all 0.4s ease-in-out; /* Smooth transition for hover effect */
+  border: 1px solid rgba(76, 255, 145, 0.3); /* Subtle green border for definition */
+}
+
+/* Hover state for the thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+  180deg,
+  theme("colors.theme.500"),
+  theme("colors.theme.600")
+);
+ /* Even brighter green on hover */
+  /* Intense, focused glow on hover */
+  box-shadow: 0 0 20px rgba(theme("colors.theme.500")); /* Much stronger green glow */
+  border: 1px solid rgba(theme("colors.theme.500"), 0.5); /* Clearer green border on hover */
+}
+
+/* Text selection style */
+::selection {
+  background-color: theme("colors.theme.500"); /* A solid, professional green */
+  color: #000000; /* A very light green (Honeydew) for high contrast text */
+}
+canvas {
+  filter: drop-shadow(0 0 20px theme("colors.theme.500"));
+}
+/* @import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css"; */
+
+.binary-bg {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 18px,
+    rgba(0, 255, 0, 0.15) 20px
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.binary-bg::before {
+  content: "0101010010110101010110010101010010101010010101";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  font-size: 16px;
+  line-height: 20px;
+  font-family: monospace;
+  color: rgba(0, 255, 0, 0.2);
+  animation: binaryMove 8s linear infinite;
+  white-space: pre;
+}
+
+@keyframes binaryMove {
+  0% {
+    transform: translateY(0);
+    content: "0101010010110101010110010101010010101010010101";
+  }
+  50% {
+    content: "1010101101001010101001101010101101010100101101";
+  }
+  100% {
+    transform: translateY(-50%);
+    content: "0101010010110101010110010101010010101010010101";
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  animation: scroll 20s linear infinite;
+}
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow 2s infinite ease-in-out;
+}

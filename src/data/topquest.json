@@ -1,0 +1,599 @@
+[
+  {
+    "id": 1,
+    "title": "Mirror Index Pair",
+    "description": "Given an array of integers, find all pairs of indices (i, j) such that nums[i] equals nums[j], and i is the mirror index of j. The mirror index of k is defined as (n-1-k), where n is the array length. Return all such pairs sorted by increasing index.",
+    "constraints": "2 <= nums.length <= 2 * 10^5, -10^9 <= nums[i] <= 10^9",
+    "inputFormat": "First line contains n. Next line contains n integers.",
+    "outputFormat": "List of pairs [[i, j], ...] in increasing order.",
+    "examples": [
+      { "input": "6\n1 2 3 3 2 1", "output": "[[0,5],[1,4],[2,3]]" },
+      { "input": "4\n5 7 7 5", "output": "[[0,3],[1,2]]" }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Subarray Median Sum",
+    "description": "For all subarrays of an array with length at least 2, compute the median of each subarray and sum all these medians. Print the resulting sum. Median is the middle value in sorted order or the lower middle for even-length subarrays.",
+    "constraints": "2 <= n <= 2000, -10^4 <= nums[i] <= 10^4",
+    "inputFormat": "First line n, next line n integers.",
+    "outputFormat": "Integer sum of medians.",
+    "examples": [
+      { "input": "3\n1 2 3", "output": "5" },
+      { "input": "4\n2 1 4 3", "output": "15" }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Shifted Palindrome",
+    "description": "Determine if a string can be transformed into a palindrome by any number of cyclic shifts (rotations). Print 'true' if possible, otherwise 'false'.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "Single string s.",
+    "outputFormat": "true or false.",
+    "examples": [
+      { "input": "aab", "output": "true" },
+      { "input": "abc", "output": "false" }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Kth Missing Positive XOR",
+    "description": "Given a sorted array of positive integers and integer k, find the kth missing positive integer for which the XOR of all missing numbers before it is even. Report that number.",
+    "constraints": "1 <= nums.length <= 10^5, 1 <= k <= 10^9",
+    "inputFormat": "First line n and k, next line n sorted positive integers.",
+    "outputFormat": "The kth missing number satisfying the XOR condition.",
+    "examples": [
+      { "input": "5 3\n2 3 4 7 11", "output": "6" },
+      { "input": "4 2\n1 2 3 4", "output": "6" }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Matrix Snake Path",
+    "description": "Given an n x n integer matrix, find the maximum sum of a path from top-left to bottom-right, moving only right or down. The path must alternate between prime and non-prime numbers at each step. If no such path exists, print -1.",
+    "constraints": "2 <= n <= 200, -10^5 <= matrix[i][j] <= 10^5",
+    "inputFormat": "First line n, then n lines each with n integers.",
+    "outputFormat": "Maximum path sum or -1.",
+    "examples": [
+      { "input": "3\n2 4 3\n6 5 7\n9 8 11", "output": "33" },
+      { "input": "2\n4 6\n8 10", "output": "-1" }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Balanced Binary Array",
+    "description": "Given a binary array (only 0s and 1s), find the length of the longest subarray where the number of 0s and 1s is equal.",
+    "constraints": "2 <= n <= 2 * 10^5",
+    "inputFormat": "First line n, second line n space-separated 0 or 1.",
+    "outputFormat": "Length of longest balanced subarray.",
+    "examples": [
+      { "input": "6\n0 1 0 1 1 0", "output": "6" },
+      { "input": "4\n0 0 1 1", "output": "4" }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Unique XOR Path",
+    "description": "Starting from top-left of an n x m grid of integers, move only right or down to bottom-right. Find the maximum XOR of the values along any such path.",
+    "constraints": "2 <= n, m <= 15, 0 <= grid[i][j] < 2^31",
+    "inputFormat": "First line n m, then n lines with m integers.",
+    "outputFormat": "Maximum XOR value over all paths.",
+    "examples": [
+      { "input": "2 2\n1 2\n3 4", "output": "7" },
+      { "input": "3 3\n5 1 7\n3 6 2\n4 8 9", "output": "15" }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "String Power Subsequence",
+    "description": "Given a string, determine the length of the longest subsequence where the count of each character is a power of two (eg: 1, 2, 4, 8...).",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "Single string s.",
+    "outputFormat": "Length of the longest qualifying subsequence.",
+    "examples": [
+      { "input": "aabbccc", "output": "6" },
+      { "input": "abc", "output": "0" }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Alien Dictionary Validator",
+    "description": "Given an alien alphabet order string and a list of words, determine if these words are sorted lexicographically according to the alien language.",
+    "constraints": "1 <= words.length <= 10^5, 1 <= words[i].length <= 100",
+    "inputFormat": "First line alien alphabet string, second line n, then n words.",
+    "outputFormat": "true or false.",
+    "examples": [
+      { "input": "hlabcdefgijkmnopqrstuvwxyz\n2\nhello\nleetcode", "output": "true" },
+      { "input": "worldabcefghijkmnpqstuvxyzlo\n2\nword\nworld", "output": "false" }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Circular Peak Element",
+    "description": "Given a circular array, find the index of the first element that is greater than both its neighbors when traversing clockwise. Return -1 if no peak exists.",
+    "constraints": "3 <= nums.length <= 10^5, -10^9 <= nums[i] <= 10^9",
+    "inputFormat": "First line n, second line n integers.",
+    "outputFormat": "Index of first peak or -1.",
+    "examples": [
+      { "input": "5\n1 3 2 1 2", "output": "1" },
+      { "input": "4\n2 2 2 2", "output": "-1" }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Digit Jump Game",
+    "description": "From index 0 in a string of digits, jump to adjacent indices or any other index that has the same digit. Find the minimum moves to reach the last index.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "Single string of digits.",
+    "outputFormat": "Minimum number of moves.",
+    "examples": [
+      { "input": "012345", "output": "5" },
+      { "input": "011010", "output": "3" }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "XOR-Subarray Balance",
+    "description": "Find the maximum length subarray where the XOR of its elements equals their sum.",
+    "constraints": "1 <= n <= 2 * 10^5, 0 <= nums[i] <= 10^9",
+    "inputFormat": "First line n, second line n integers.",
+    "outputFormat": "Maximum length of such subarray.",
+    "examples": [
+      { "input": "5\n2 2 2 2 2", "output": "5" },
+      { "input": "4\n1 2 3 4", "output": "2" }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Tree Equilibrium Split",
+    "description": "Given a tree with values on each node, determine if any edge removal can split the tree into two subtrees with equal sums. Print true if possible, else false.",
+    "constraints": "2 <= n <= 2 * 10^5, -10^4 <= values[i] <= 10^4",
+    "inputFormat": "First line n, second line n node values, then n-1 edges lines.",
+    "outputFormat": "true or false.",
+    "examples": [
+      { "input": "3\n1 2 3\n1 2\n2 3", "output": "true" },
+      { "input": "3\n1 1 1\n1 2\n1 3", "output": "false" }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Rotating Domino Chain",
+    "description": "Given a list of dominos (a,b pairs), check if by optionally rotating dominos (swapping a and b) they can be arranged in a line where adjacent domino numbers match. Print true if possible, else false.",
+    "constraints": "1 <= n <= 10^4, 0 <= a,b <= 9",
+    "inputFormat": "First line n, next n lines each domino a b.",
+    "outputFormat": "true or false.",
+    "examples": [
+      { "input": "3\n1 2\n2 3\n3 1", "output": "true" },
+      { "input": "2\n1 2\n3 4", "output": "false" }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Hidden Mountain Ranges",
+    "description": "Given an array of altitudes, count the number of 'mountains' where a mountain is a strictly increasing sequence followed by a strictly decreasing sequence of length at least 3.",
+    "constraints": "3 <= n <= 2 * 10^5",
+    "inputFormat": "First line n, second line n integers.",
+    "outputFormat": "Number of mountains.",
+    "examples": [
+      { "input": "6\n2 1 4 7 3 2", "output": "1" },
+      { "input": "5\n2 2 2 2 2", "output": "0" }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Lexicographic Kth Swap",
+    "description": "Given a string s and an integer k (max 1), perform at most k swaps of any pair of characters to create the lexicographically smallest string possible. Print it.",
+    "constraints": "1 <= s.length <= 10^5, 0 <= k <= 1",
+    "inputFormat": "Line 1 string s, line 2 integer k.",
+    "outputFormat": "Lex smallest string after up to k swaps.",
+    "examples": [
+      { "input": "dcab\n1", "output": "acdb" },
+      { "input": "abc\n1", "output": "abc" }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Sliding Window Beauty",
+    "description": "Given an array nums, for each window of size k, find and print the x-th smallest element in the window. If x exceeds window size, print -1 for that window.",
+    "constraints": "1 <= n <= 2 * 10^5, 1 <= k <= n, 1 <= x <= k",
+    "inputFormat": "Line 1: n k x; line 2: n integers.",
+    "outputFormat": "Values for each sliding window separated by spaces.",
+    "examples": [
+      { "input": "5 3 2\n1 3 5 2 8", "output": "3 3 5" },
+      { "input": "4 2 2\n2 1 4 3", "output": "2 4 4" }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Parity Subarray Counter",
+    "description": "Count and print the number of subarrays where the count of even and odd numbers is the same.",
+    "constraints": "2 <= n <= 2 * 10^5",
+    "inputFormat": "Line 1: n; line 2: array of n integers.",
+    "outputFormat": "Integer count of such subarrays.",
+    "examples": [
+      { "input": "4\n1 2 3 4", "output": "2" },
+      { "input": "3\n2 4 6", "output": "0" }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Graph Infection Time",
+    "description": "In a graph with n nodes, starting from node start, each minute infected nodes infect their neighbors. Determine minimum minutes to infect all nodes, or print -1 if impossible.",
+    "constraints": "1 <= n <= 10^5, 0 <= edges.length <= 2 * 10^5",
+    "inputFormat": "Line 1: n start; line 2: m; next m lines edges u v.",
+    "outputFormat": "Minimum infection time or -1.",
+    "examples": [
+      { "input": "4 1\n3\n1 2\n2 3\n3 4", "output": "3" },
+      { "input": "3 1\n1\n2 3", "output": "-1" }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Prime Segment Split",
+    "description": "Split an array into the fewest contiguous subarrays such that every subarray's sum is a prime number. If impossible, print -1.",
+    "constraints": "1 <= n <= 1000, 1 <= nums[i] <= 1000",
+    "inputFormat": "Line 1: n; line 2: n integers.",
+    "outputFormat": "Minimum number of subarrays or -1.",
+    "examples": [
+      { "input": "4\n2 3 5 1", "output": "2" },
+      { "input": "3\n4 6 8", "output": "-1" }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Weighted Jump Array",
+    "description": "You start at index 0 of an array where each element is max jump length. Jumping to a cell costs its value. Find the minimum total cost to reach the last index.",
+    "constraints": "1 <= n <= 10^4, 1 <= nums[i] <= 10^3",
+    "inputFormat": "Line 1: n; line 2: n integers.",
+    "outputFormat": "Minimum total cost.",
+    "examples": [
+      { "input": "5\n1 3 2 4 2", "output": "5" },
+      { "input": "4\n2 2 2 2", "output": "4" }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Array XOR Maze",
+    "description": "Given an array, at position i you can jump to i+nums[i]. Find the maximum XOR of visited elements from start to last index.",
+    "constraints": "1 <= n <= 10^5, 0 <= nums[i] <= 10^9",
+    "inputFormat": "Line 1: n; line 2: array.",
+    "outputFormat": "Maximum XOR value.",
+    "examples": [
+      { "input": "4\n1 2 3 4", "output": "7" },
+      { "input": "3\n0 1 2", "output": "3" }
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Diagonal Sum Swap",
+    "description": "Given a square matrix, you may swap one pair of rows or columns exactly once to maximize the sum of the main diagonal. Print the maximum diagonal sum achievable.",
+    "constraints": "2 <= n <= 100, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "Line 1: n; next n lines: n integers.",
+    "outputFormat": "Maximum diagonal sum after one swap.",
+    "examples": [
+      { "input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "15" },
+      { "input": "2\n1 2\n3 4", "output": "5" }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Subarray Power Sum",
+    "description": "Count all subarrays whose sums are powers of two.",
+    "constraints": "1 <= n <= 10^4, 1 <= nums[i] <= 10^3",
+    "inputFormat": "Line 1: n; line 2: n integers.",
+    "outputFormat": "Number of such subarrays.",
+    "examples": [
+      { "input": "3\n1 1 2", "output": "3" },
+      { "input": "4\n2 2 4 1", "output": "4" }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Circular Subarray Median",
+    "description": "For every circular subarray of length k in an array, find its median and sum all medians. Print the total sum.",
+    "constraints": "1 <= n <= 10^4, 1 <= k <= n, -10^4 <= nums[i] <= 10^4",
+    "inputFormat": "Line 1: n k; line 2: n integers.",
+    "outputFormat": "Sum of medians over all circular subarrays.",
+    "examples": [
+      { "input": "5 3\n1 3 2 4 5", "output": "10" },
+      { "input": "4 2\n2 1 3 4", "output": "8" }
+    ]
+  },
+  {
+    "id": 26,
+    "title": "Prefix XOR Count",
+    "description": "Given an array and integer k, count the number of subarrays whose prefix XOR equals k.",
+    "constraints": "1 <= n <= 10^5, 0 <= nums[i], k <= 10^9",
+    "inputFormat": "Line 1: n k; line 2: n integers.",
+    "outputFormat": "Count of such subarrays.",
+    "examples": [
+      { "input": "4 2\n1 2 3 0", "output": "2" },
+      { "input": "3 1\n1 1 0", "output": "2" }
+    ]
+  },
+  {
+    "id": 27,
+    "title": "Diagonal Difference Flip",
+    "description": "Flip one row or column of a square matrix to get the maximum absolute difference between sums of main and secondary diagonals. Print that maximum difference.",
+    "constraints": "2 <= n <= 50, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "Line 1: n; next n lines: n integers.",
+    "outputFormat": "Maximum diagonal difference after one flip.",
+    "examples": [
+      { "input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "12" },
+      { "input": "2\n1 2\n3 4", "output": "4" }
+    ]
+  },
+  {
+    "id": 28,
+    "title": "Mirror Subsequence",
+    "description": "Find the length of the longest subsequence which reads the same forward and backward (palindromic subsequence) in a string.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Length of longest mirror subsequence.",
+    "examples": [
+      { "input": "abacaba", "output": "7" },
+      { "input": "abcdef", "output": "1" }
+    ]
+  },
+  {
+    "id": 29,
+    "title": "Minimum Cost Path with Obstacles",
+    "description": "Find minimum cost path from top-left to bottom-right in grid, moving right or down through cells with cost except obstacles (-1). Print -1 if no path.",
+    "constraints": "1 <= n, m <= 100, -1 <= grid[i][j] <= 10^3",
+    "inputFormat": "Line 1: n m; next n lines: m integers.",
+    "outputFormat": "Minimum path cost or -1.",
+    "examples": [
+      { "input": "2 2\n1 2\n-1 4", "output": "-1" },
+      { "input": "3 3\n1 2 3\n4 -1 5\n6 7 8", "output": "27" }
+    ]
+  },
+  {
+    "id": 30,
+    "title": "Palindrome Partition Count",
+    "description": "Count different ways to partition a string so each substring is a palindrome. Print the total count.",
+    "constraints": "1 <= s.length <= 20",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Number of palindrome partitions.",
+    "examples": [
+      { "input": "aab", "output": "2" },
+      { "input": "racecar", "output": "1" }
+    ]
+  }
+
+,
+
+ 
+  {
+    "id": 31,
+    "title": "Maximum Product Subarray XOR",
+    "description": "Given an array of positive integers, find the maximum value obtained by XOR-ing the elements of any subarray multiplied by the subarray’s length. The subarray must be contiguous.",
+    "constraints": "1 <= n <= 10^5, 1 <= nums[i] <= 10^9",
+    "inputFormat": "First line contains n. Next line contains n integers.",
+    "outputFormat": "Maximum product value.",
+    "examples": [
+      { "input": "4\n1 2 3 4", "output": "12" },
+      { "input": "3\n2 1 3", "output": "6" }
+    ]
+  },
+  {
+    "id": 32,
+    "title": "Graph Max Reach",
+    "description": "Given a directed graph with n nodes and m edges, find the node from which the maximum number of nodes can be reached (including itself) through directed paths. Print the node number.",
+    "constraints": "1 <= n <= 10^5, 0 <= m <= 2*10^5",
+    "inputFormat": "First line: n m. Next m lines: edges u v.",
+    "outputFormat": "Node number with maximum reach.",
+    "examples": [
+      { "input": "4 4\n1 2\n2 3\n3 4\n4 2", "output": "2" },
+      { "input": "3 2\n1 2\n2 3", "output": "1" }
+    ]
+  },
+  {
+    "id": 33,
+    "title": "Tree Path XOR",
+    "description": "Given a tree with n nodes and values on each node, find the path (any path between any two nodes) that has the maximum XOR value of its node values. Print this maximum XOR.",
+    "constraints": "1 <= n <= 2*10^5, 0 <= value <= 10^9",
+    "inputFormat": "First line n. Next line n values of nodes. Next n-1 lines edges.",
+    "outputFormat": "Maximum XOR on any path.",
+    "examples": [
+      { "input": "3\n1 2 3\n1 2\n2 3", "output": "3" },
+      { "input": "4\n4 2 5 1\n1 2\n2 3\n3 4", "output": "7" }
+    ]
+  },
+  {
+    "id": 34,
+    "title": "Longest Alternating Subarray",
+    "description": "Find the length of the longest contiguous subarray where the parity of elements alternates (odd, even, odd, even, etc.).",
+    "constraints": "1 <= n <= 10^5, 1 <= nums[i] <= 10^9",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Length of longest alternating parity subarray.",
+    "examples": [
+      { "input": "6\n1 2 4 5 7 8", "output": "3" },
+      { "input": "5\n2 4 6 8 10", "output": "1" }
+    ]
+  },
+  {
+    "id": 35,
+    "title": "Weighted Interval Selection",
+    "description": "Given a list of intervals with start time, end time, and weight, select a set of non-overlapping intervals with the maximum total weight. Print the maximum total weight.",
+    "constraints": "1 <= n <= 10^5, 1 <= start <= end <= 10^9, 1 <= weight <= 10^9",
+    "inputFormat": "First line n. Next n lines: start end weight.",
+    "outputFormat": "Maximum total weight.",
+    "examples": [
+      { "input": "3\n1 3 5\n2 5 6\n4 6 5", "output": "10" },
+      { "input": "2\n1 2 3\n2 3 4", "output": "4" }
+    ]
+  },
+  {
+    "id": 36,
+    "title": "Subarray Max-Min Difference",
+    "description": "Count the number of subarrays where the difference between the maximum and minimum element is less than or equal to k.",
+    "constraints": "1 <= n <= 10^5, 1 <= nums[i] <= 10^9, 0 <= k <= 10^9",
+    "inputFormat": "First line n k. Next line n integers.",
+    "outputFormat": "Count of valid subarrays.",
+    "examples": [
+      { "input": "5 2\n1 2 3 1 2", "output": "9" },
+      { "input": "3 0\n1 1 2", "output": "3" }
+    ]
+  },
+  {
+    "id": 37,
+    "title": "Circular Tree Diameter",
+    "description": "Given a tree with n nodes, consider it circular (connect first and last nodes). Find and print the maximum distance between any two nodes in this circular tree.",
+    "constraints": "2 <= n <= 2*10^5",
+    "inputFormat": "First line n. Next n-1 lines edges u v.",
+    "outputFormat": "Maximum distance.",
+    "examples": [
+      { "input": "4\n1 2\n2 3\n3 4", "output": "3" },
+      { "input": "3\n1 2\n2 3", "output": "2" }
+    ]
+  },
+  {
+    "id": 38,
+    "title": "Maximum Submatrix Sum with K",
+    "description": "Given an n x m matrix and integer k, find the maximum sum submatrix such that the sum is less than or equal to k. Print that maximum sum.",
+    "constraints": "1 <= n, m <= 100, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "First line n m k. Next n lines each with m integers.",
+    "outputFormat": "Maximum sum <= k.",
+    "examples": [
+      { "input": "2 2 5\n1 2\n3 4", "output": "5" },
+      { "input": "3 3 6\n1 2 1\n2 2 2\n1 1 1", "output": "6" }
+    ]
+  },
+  {
+    "id": 39,
+    "title": "Unique Paths with XOR",
+    "description": "Count the number of paths from the top-left to bottom-right of an n x m grid where the XOR of all visited cells equals a target value. You may only move right or down.",
+    "constraints": "1 <= n, m <= 15, 0 <= grid[i][j] < 32",
+    "inputFormat": "Line 1: n m target. Next n lines: m integers.",
+    "outputFormat": "Number of target XOR paths.",
+    "examples": [
+      { "input": "2 2 3\n1 2\n2 1", "output": "2" },
+      { "input": "3 3 1\n1 0 1\n1 1 0\n0 1 1", "output": "4" }
+    ]
+  },
+  {
+    "id": 40,
+    "title": "Max Non-Adjacent Sum Tree",
+    "description": "In a tree with values on nodes, select a set of nodes with no two nodes adjacent to maximize their value sum. Print the maximum sum.",
+    "constraints": "1 <= n <= 2*10^5, 1 <= value <= 10^9",
+    "inputFormat": "First line n. Next line values. Next n-1 edges.",
+    "outputFormat": "Maximum sum.",
+    "examples": [
+      { "input": "3\n1 2 3\n1 2\n2 3", "output": "4" },
+      { "input": "4\n3 2 1 4\n1 2\n1 3\n3 4", "output": "7" }
+    ]
+  },
+  {
+    "id": 41,
+    "title": "Weighted Tree Path XOR",
+    "description": "Given a tree with weighted edges, find the path between any two nodes which has the maximum XOR of its edge weights. Print that maximum XOR value.",
+    "constraints": "1 <= n <= 2*10^5, 1 <= weight <= 10^9",
+    "inputFormat": "First line n. Next n-1 lines contain u v w (edge with weight).",
+    "outputFormat": "Maximum XOR value.",
+    "examples": [
+      { "input": "3\n1 2 3\n2 3 2", "output": "3" },
+      { "input": "4\n1 2 1\n2 3 2\n3 4 3", "output": "3" }
+    ]
+  },
+  {
+    "id": 42,
+    "title": "Bitmask Hamiltonian Paths",
+    "description": "Count the number of Hamiltonian paths in a weighted directed acyclic graph using dynamic programming with bitmasking.",
+    "constraints": "1 <= n <= 18, 0 <= weight <= 10^9",
+    "inputFormat": "First line n m. Next m lines: u v w.",
+    "outputFormat": "Number of Hamiltonian paths.",
+    "examples": [
+      { "input": "3 3\n1 2 1\n2 3 1\n1 3 1", "output": "2" },
+      { "input": "4 4\n1 2 1\n2 3 1\n3 4 1\n1 3 1", "output": "2" }
+    ]
+  },
+  {
+    "id": 43,
+    "title": "2D Segment Tree Sum Query",
+    "description": "Implement a 2D segment tree over an n x m matrix to process point updates and submatrix sum queries.",
+    "constraints": "1 <= n, m <= 500, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "First line n m q. Next n lines: m integers. Next q lines: type x y val (type 1=update, 2=query).",
+    "outputFormat": "Print results of all type 2 queries.",
+    "examples": [
+      { "input": "2 2 2\n1 2\n3 4\n2 1 1 2\n1 2 2 5", "output": "1" }
+    ]
+  },
+  {
+    "id": 44,
+    "title": "Palindrome Partition with Cost",
+    "description": "Partition a string into palindromic substrings minimizing the total cost, where the cost of each palindrome substring is the square of its length. Print the minimum total cost.",
+    "constraints": "1 <= s.length <= 2000",
+    "inputFormat": "Single string s.",
+    "outputFormat": "Minimum total cost.",
+    "examples": [
+      { "input": "aab", "output": "2" },
+      { "input": "abc", "output": "3" }
+    ]
+  },
+  {
+    "id": 45,
+    "title": "Dynamic MST after Edge Removal",
+    "description": "Given a graph with edges, compute the MST (minimum spanning tree) weight after removing each edge individually. Print the MST weights or -1 if the graph becomes disconnected.",
+    "constraints": "1 <= n <= 10^4, 1 <= m <= 2*10^4, 1 <= weight <= 10^5",
+    "inputFormat": "First line n m. Next m lines: u v w.",
+    "outputFormat": "Array of MST weights after each edge removal or -1.",
+    "examples": [
+      { "input": "3 3\n1 2 1\n2 3 2\n1 3 3", "output": "[3,3,3]" }
+    ]
+  },
+  {
+    "id": 46,
+    "title": "Maximum XOR Subtree",
+    "description": "Find the subtree with the maximum XOR among all subtrees of a given tree with node values. Print the maximum XOR value.",
+    "constraints": "1 <= n <= 2*10^5, 0 <= value <= 10^9",
+    "inputFormat": "First line n. Next line values. Next n-1 edges.",
+    "outputFormat": "Maximum XOR value.",
+    "examples": [
+      { "input": "3\n1 2 3\n1 2\n2 3", "output": "3" }
+    ]
+  },
+  {
+    "id": 47,
+    "title": "Trie Maximum XOR Query",
+    "description": "Given an array of integers, answer queries asking for the maximum XOR of the query value with any value in the array. Use trie-based data structure for efficient answers.",
+    "constraints": "1 <= n, q <= 10^5, 0 <= nums[i], x <= 10^9",
+    "inputFormat": "First line n q. Next line array. Next q lines query values x.",
+    "outputFormat": "Maximum XOR for each query.",
+    "examples": [
+      { "input": "3 2\n1 2 3\n3\n1", "output": "3 3" }
+    ]
+  },
+  {
+    "id": 48,
+    "title": "DP on Bitmask Traveling Salesman",
+    "description": "Traveling Salesman Problem (TSP): Given weighted graph, find the minimum cost to visit all nodes starting and ending at the same node using DP with bitmasks.",
+    "constraints": "1 <= n <= 18, 0 <= weight <= 10^5",
+    "inputFormat": "First line n. Next n lines: n integers (weights).",
+    "outputFormat": "Minimum traveling cost.",
+    "examples": [
+      { "input": "3\n0 1 2\n1 0 3\n2 3 0", "output": "4" }
+    ]
+  },
+  {
+    "id": 49,
+    "title": "Maximum Flow with Capacity",
+    "description": "Given a flow network, calculate the maximum flow from source to sink under capacity constraints on edges.",
+    "constraints": "1 <= n <= 500, 0 <= capacity <= 10^5",
+    "inputFormat": "First line n m s t. Next m lines: u v capacity.",
+    "outputFormat": "Maximum flow value.",
+    "examples": [
+      { "input": "4 5 1 4\n1 2 100\n1 3 100\n2 3 1\n2 4 100\n3 4 100", "output": "200" }
+    ]
+  },
+  {
+    "id": 50,
+    "title": "Kth Shortest Path in DAG",
+    "description": "In a directed acyclic graph (DAG) with weighted edges, find the length of the Kth shortest path from source to target. If less than K paths exist, print -1.",
+    "constraints": "1 <= n <= 1000, 1 <= m <= 5000, 1 <= K <= 1000, 1 <= weight <= 10^5",
+    "inputFormat": "First line n m s t K. Next m lines: u v w.",
+    "outputFormat": "Length of Kth shortest path or -1.",
+    "examples": [
+      { "input": "4 5 1 4 2\n1 2 1\n1 3 2\n2 3 1\n2 4 3\n3 4 1", "output": "4" }
+    ]
+  }
+]
