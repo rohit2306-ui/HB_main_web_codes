@@ -4,15 +4,7 @@ import { db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-import {
-  ArrowRight,
-  Play,
-  Calendar,
-  MapPin,
-  Users,
-  Award,
-  Video,
-} from "lucide-react";
+import { ArrowRight, Play, Calendar, MapPin, Users, Award, Video } from "lucide-react";
 
 type Prize = {
   id?: string;
@@ -20,12 +12,14 @@ type Prize = {
   amount?: string | number;
   description?: string;
 };
+
 type TimelineItem = {
   title: string;
   date: string;
   description?: string;
   status?: "upcoming" | "ongoing" | "complete";
 };
+
 type GuidanceSession = {
   id?: string;
   title?: string;
@@ -39,11 +33,14 @@ type Hackathon = {
   name: string;
   description: string;
   theme?: string;
+  themeImage?: string;
   place?: string;
   city?: string;
   address?: string;
   thumbnail?: string;
   createdBy?: string;
+  venueDescription?: string;
+  venueImages?: string[];
   status?: "open" | "closed";
   timelines?: TimelineItem[];
   guidanceSessions?: GuidanceSession[];
@@ -61,7 +58,7 @@ const extractYouTubeId = (url?: string) => {
 const CountdownTimer: React.FC<{
   countdown: { days: number; hours: number; minutes: number; seconds: number };
 }> = ({ countdown }) => (
-  <div className="flex justify-center gap-4 mt-12">
+  <div className="flex flex-wrap justify-center gap-4 mt-12">
     {[
       { label: "Days", value: countdown.days },
       { label: "Hours", value: countdown.hours },
@@ -86,7 +83,7 @@ const HackathonDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const GuidanceRef = useRef(null);
+  const GuidanceRef = useRef<HTMLDivElement>(null);
 
   const [hackathon, setHackathon] = useState<Hackathon | null>(null);
   const [loading, setLoading] = useState(true);
@@ -97,12 +94,8 @@ const HackathonDetailsPage: React.FC = () => {
     seconds: 0,
   });
 
-  const handleScrollToSection = (ref) => {
-    ref.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest",
-    });
+  const handleScrollToSection = (ref: any) => {
+    ref.current.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
   };
 
   useEffect(() => {
@@ -188,9 +181,7 @@ const HackathonDetailsPage: React.FC = () => {
 
   if (loading) return <LoadingSpinner size="lg" />;
   if (!hackathon)
-    return (
-      <p className="text-center mt-12 text-red-500">Hackathon not found.</p>
-    );
+    return <p className="text-center mt-12 text-red-500">Hackathon not found.</p>;
 
   const isClosed = hackathon.status === "closed";
 
@@ -209,7 +200,7 @@ const HackathonDetailsPage: React.FC = () => {
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow-lg ${
               isClosed
@@ -224,10 +215,10 @@ const HackathonDetailsPage: React.FC = () => {
             />
             {isClosed ? "Registration Closed" : "Open for Registration"}
           </span>
-          <h1 className="mt-8 text-5xl sm:text-7xl font-black text-white tracking-tight">
+          <h1 className="mt-8 text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight">
             {hackathon.name}
           </h1>
-          <p className="mt-6 text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+          <p className="mt-6 text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
             {hackathon.description}
           </p>
 
@@ -264,15 +255,15 @@ const HackathonDetailsPage: React.FC = () => {
       </section>
 
       {/* Details Section */}
-      <div className="max-w-7xl mx-auto px-6 py-20 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* About */}
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-10 hover:shadow-2xl transition-shadow duration-300">
+        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 hover:shadow-2xl transition-shadow duration-300">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 About {hackathon.name}
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-sm sm:text-base">
                 {hackathon.description}
               </p>
               <div className="grid gap-4 pt-4">
@@ -283,9 +274,7 @@ const HackathonDetailsPage: React.FC = () => {
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Theme
                       </p>
-                      <p className="text-gray-900 dark:text-white">
-                        {hackathon.theme}
-                      </p>
+                      <p className="text-gray-900 dark:text-white">{hackathon.theme}</p>
                     </div>
                   </div>
                 )}
@@ -296,9 +285,7 @@ const HackathonDetailsPage: React.FC = () => {
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Venue
                       </p>
-                      <p className="text-gray-900 dark:text-white">
-                        {hackathon.place}
-                      </p>
+                      <p className="text-gray-900 dark:text-white">{hackathon.place}</p>
                     </div>
                   </div>
                 )}
@@ -309,9 +296,7 @@ const HackathonDetailsPage: React.FC = () => {
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         City
                       </p>
-                      <p className="text-gray-900 dark:text-white">
-                        {hackathon.city}
-                      </p>
+                      <p className="text-gray-900 dark:text-white">{hackathon.city}</p>
                     </div>
                   </div>
                 )}
@@ -322,9 +307,7 @@ const HackathonDetailsPage: React.FC = () => {
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Hosted by
                       </p>
-                      <p className="text-gray-900 dark:text-white">
-                        {hackathon.createdBy}
-                      </p>
+                      <p className="text-gray-900 dark:text-white">{hackathon.createdBy}</p>
                     </div>
                   </div>
                 )}
@@ -334,164 +317,154 @@ const HackathonDetailsPage: React.FC = () => {
               <img
                 src={hackathon.thumbnail}
                 alt={hackathon.name}
-                className="w-full h-96 object-cover rounded-2xl shadow-2xl ring-4 ring-gray-200 dark:ring-gray-800"
+                className="w-full h-68 sm:h-96 md:h-[25rem] lg:h-[20rem] object-cover rounded-2xl shadow-2xl ring-4 ring-gray-200 dark:ring-gray-800"
               />
             )}
           </div>
         </div>
 
-        {/* Timeline - ENHANCED */}
-        {hackathon.timelines?.length ? (
-          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-10">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                Event Timeline
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Track every milestone of your journey
-              </p>
-            </div>
+     
+        {/* Timeline Section */}
+{hackathon.timelines?.length ? (
+  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 mb-12">
+    <div className="text-center mb-10 sm:mb-12">
+      <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 sm:mb-3">
+        Event Timeline
+      </h2>
+      <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
+        Track every milestone of your journey
+      </p>
+    </div>
 
-            <div className="relative max-w-4xl mx-auto">
-              {/* Gradient Timeline Line */}
-              <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 via-yellow-400 to-gray-300 dark:from-green-400 dark:via-yellow-400 dark:to-gray-600 rounded-full" />
+    <div className="relative max-w-full sm:max-w-4xl mx-auto">
+      {/* Gradient Timeline Line */}
+      <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 via-yellow-400 to-gray-300 dark:from-green-400 dark:via-yellow-400 dark:to-gray-600 rounded-full" />
 
-              {hackathon.timelines.map((t, idx) => {
-                const isLast = idx === hackathon.timelines.length - 1;
+      {hackathon.timelines.map((t, idx) => {
+        const isLast = idx === hackathon.timelines.length - 1;
 
-                const dotConfig = {
-                  complete: {
-                    bg: "bg-green-500 dark:bg-green-400",
-                    ring: "ring-green-200 dark:ring-green-900",
-                    glow: "shadow-green-500/50",
-                  },
-                  ongoing: {
-                    bg: "bg-yellow-400 dark:bg-yellow-300",
-                    ring: "ring-yellow-200 dark:ring-yellow-900",
-                    glow: "shadow-yellow-400/50 animate-pulse",
-                  },
-                  upcoming: {
-                    bg: "bg-gray-400 dark:bg-gray-600",
-                    ring: "ring-gray-200 dark:ring-gray-700",
-                    glow: "shadow-gray-400/30",
-                  },
-                };
+        const dotConfig = {
+          complete: { bg: "bg-green-500 dark:bg-green-400", ring: "ring-green-200 dark:ring-green-900", glow: "shadow-green-500/50" },
+          ongoing: { bg: "bg-yellow-400 dark:bg-yellow-300", ring: "ring-yellow-200 dark:ring-yellow-900", glow: "shadow-yellow-400/50 animate-pulse" },
+          upcoming: { bg: "bg-gray-400 dark:bg-gray-600", ring: "ring-gray-200 dark:ring-gray-700", glow: "shadow-gray-400/30" },
+        };
 
-                const cardConfig = {
-                  complete: {
-                    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
-                    border: "border-green-200 dark:border-green-800",
-                    opacity: "opacity-80",
-                  },
-                  ongoing: {
-                    bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30",
-                    border: "border-yellow-300 dark:border-yellow-700",
-                    shadow:
-                      "shadow-xl shadow-yellow-200/50 dark:shadow-yellow-900/30",
-                  },
-                  upcoming: {
-                    bg: "bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-900/30 dark:to-slate-900/30",
-                    border: "border-gray-200 dark:border-gray-700",
-                    opacity: "",
-                  },
-                };
+        const cardConfig = {
+          complete: { bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30", border: "border-green-200 dark:border-green-800", opacity: "opacity-80" },
+          ongoing: { bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30", border: "border-yellow-300 dark:border-yellow-700", shadow: "shadow-xl shadow-yellow-200/50 dark:shadow-yellow-900/30" },
+          upcoming: { bg: "bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-900/30 dark:to-slate-900/30", border: "border-gray-200 dark:border-gray-700", opacity: "" },
+        };
 
-                const labelConfig = {
-                  complete: {
-                    emoji: "✅",
-                    text: "Completed",
-                    color:
-                      "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border border-green-300 dark:border-green-700",
-                  },
-                  ongoing: {
-                    emoji: "🔥",
-                    text: "Ongoing",
-                    color:
-                      "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700",
-                  },
-                  upcoming: {
-                    emoji: "🕓",
-                    text: "Upcoming",
-                    color:
-                      "bg-gray-100 text-gray-700 dark:bg-gray-800/50 dark:text-gray-300 border border-gray-300 dark:border-gray-600",
-                  },
-                };
+        const labelConfig = {
+          complete: { emoji: "✅", text: "Completed", color: "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 border border-green-300 dark:border-green-700" },
+          ongoing: { emoji: "🔥", text: "Ongoing", color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700" },
+          upcoming: { emoji: "🕓", text: "Upcoming", color: "bg-gray-100 text-gray-700 dark:bg-gray-800/50 dark:text-gray-300 border border-gray-300 dark:border-gray-600" },
+        };
 
-                const dot = dotConfig[t.status || "upcoming"];
-                const card = cardConfig[t.status || "upcoming"];
-                const label = labelConfig[t.status || "upcoming"];
+        const dot = dotConfig[t.status || "upcoming"];
+        const card = cardConfig[t.status || "upcoming"];
+        const label = labelConfig[t.status || "upcoming"];
 
-                return (
-                  <div
-                    key={idx}
-                    className={`relative pl-20 ${!isLast ? "pb-12" : ""} group`}
-                  >
-                    {/* Enhanced Status Dot */}
-                    <div
-                      className={`absolute left-8 top-3 -translate-x-1/2 w-5 h-5 rounded-full ${dot.bg} ${dot.ring} ${dot.glow} ring-8 border-4 border-white dark:border-gray-900 shadow-lg transition-all duration-300 group-hover:scale-125 z-10`}
-                    />
+        return (
+          <div key={idx} className={`relative pl-14 sm:pl-20 ${!isLast ? "pb-10 sm:pb-12" : "pb-6 sm:pb-8"} group`}>
+            {/* Enhanced Status Dot */}
+            <div className={`absolute left-6 sm:left-8 top-3 -translate-x-1/2 w-4 sm:w-5 h-4 sm:h-5 rounded-full ${dot.bg} ${dot.ring} ${dot.glow} ring-6 sm:ring-8 border-4 border-white dark:border-gray-900 shadow-lg transition-all duration-300 group-hover:scale-125 z-10`} />
 
-                    {/* Timeline Card */}
-                    <div
-                      className={`${card.bg} ${card.border} ${
-                        card.shadow || ""
-                      } ${
-                        card.opacity || ""
-                      } border-2 rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer`}
-                    >
-                      <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white flex-1">
-                          {t.title}
-                        </h3>
-                        <span
-                          className={`${label.color} text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2 whitespace-nowrap shadow-sm`}
-                        >
-                          <span className="text-base">{label.emoji}</span>
-                          <span>{label.text}</span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
-                        <Calendar className="w-4 h-4" />
-                        <span>{t.date}</span>
-                      </div>
-
-                      {t.description && (
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                          {t.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Timeline Legend */}
-            <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-              <div className="flex flex-wrap gap-6 justify-center text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-green-500 dark:bg-green-400 shadow-md" />
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">
-                    Completed
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-yellow-400 dark:bg-yellow-300 shadow-md" />
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">
-                    Ongoing
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-gray-400 dark:bg-gray-600 shadow-md" />
-                  <span className="text-gray-700 dark:text-gray-300 font-medium">
-                    Upcoming
-                  </span>
-                </div>
+            {/* Timeline Card */}
+            <div className={`${card.bg} ${card.border} ${card.shadow || ""} ${card.opacity || ""} border-2 rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer`}>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-2 sm:mb-3">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex-1">
+                  {t.title}
+                </h3>
+                <span className={`${label.color} text-xs sm:text-sm font-bold px-3 py-1 sm:px-4 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 whitespace-nowrap shadow-sm`}>
+                  <span className="text-base">{label.emoji}</span>
+                  <span>{label.text}</span>
+                </span>
               </div>
+
+              <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 sm:mb-4">
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>{t.date}</span>
+              </div>
+
+              {t.description && (
+                <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
+                  {t.description}
+                </p>
+              )}
             </div>
           </div>
-        ) : null}
+        );
+      })}
+    </div>
+
+    {/* Timeline Legend */}
+    <div className="mt-8 sm:mt-12 pt-4 sm:pt-8 border-t border-gray-200 dark:border-gray-800">
+      <div className="flex flex-wrap gap-4 sm:gap-6 justify-center text-xs sm:text-sm">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="w-3 sm:w-4 h-3 sm:h-4 rounded-full bg-green-500 dark:bg-green-400 shadow-md" />
+          <span className="text-gray-700 dark:text-gray-300 font-medium">Completed</span>
+        </div>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="w-3 sm:w-4 h-3 sm:h-4 rounded-full bg-yellow-400 dark:bg-yellow-300 shadow-md" />
+          <span className="text-gray-700 dark:text-gray-300 font-medium">Ongoing</span>
+        </div>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="w-3 sm:w-4 h-3 sm:h-4 rounded-full bg-gray-400 dark:bg-gray-600 shadow-md" />
+          <span className="text-gray-700 dark:text-gray-300 font-medium">Upcoming</span>
+        </div>
+      </div>
+    </div>
+  </div>
+) : null}
+        {/* Theme Section */}
+{hackathon.theme && hackathon.themeImage && (
+  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 mb-12 hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
+   <h1 className="text-2xl m-5">theme</h1>
+    <img
+      src={hackathon.themeImage}
+      alt={hackathon.theme}
+      className="w-full h-80 md:h-96 lg:h-[400px] object-cover rounded-3xl"
+    />
+  </div>
+)}
+
+{/* Venue Section */}
+{hackathon.place && (
+  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-10 mb-12 hover:shadow-2xl transition-shadow duration-300 text-center">
+    <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-6">
+      Venue
+    </h2>
+
+    <div className="mb-8">
+      <p className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+        {hackathon.place}
+      </p>
+      {hackathon.venueDescription && (
+        <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+          {hackathon.venueDescription}
+        </p>
+      )}
+    </div>
+
+    {hackathon.venueImages && hackathon.venueImages.length > 0 && (
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        {hackathon.venueImages.map(
+          (img, idx) =>
+            img && (
+              <img
+                key={idx}
+                src={img}
+                alt={`Venue ${idx + 1}`}
+                className="w-full aspect-square object-cover rounded-xl shadow-md"
+              />
+            )
+        )}
+      </div>
+    )}
+  </div>
+)}
+
 
         {/* Guidance Sessions */}
         {hackathon.guidanceSessions &&

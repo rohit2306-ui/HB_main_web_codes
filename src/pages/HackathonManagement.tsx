@@ -18,6 +18,7 @@ type Hackathon = {
   id: string;
   name: string;
   description?: string;
+  timelines?: { title: string; status: string }[];
 };
 
 type UserData = {
@@ -33,6 +34,7 @@ type TeamDoc = {
   submitted?: boolean;
   submittedAt?: any;
   status?: "under_review" | "accepted" | "rejected";
+  pptUrl?: string;
 };
 
 export default function HackathonManagement() {
@@ -49,6 +51,14 @@ export default function HackathonManagement() {
   const [isLeader, setIsLeader] = useState(false);
   const [saving, setSaving] = useState(false);
   const [newTeamName, setNewTeamName] = useState("");
+  const [pptFile, setPptFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [submissionOpen, setSubmissionOpen] = useState(false);
+  const [registrationOpen, setRegistrationOpen] = useState(false);
+  const [projectDescription, setProjectDescription] = useState("");
+
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   useEffect(() => {
     if (!id || !user) return;
@@ -56,23 +66,40 @@ export default function HackathonManagement() {
 
     const fetchAll = async () => {
       try {
+        // --- Fetch Hackathon ---
         const hackSnap = await getDoc(doc(db, "hackathons", id));
         if (!hackSnap.exists()) {
           setHackathon(null);
           setLoading(false);
           return;
         }
-        setHackathon({ id: hackSnap.id, ...(hackSnap.data() as any) });
+        const hackData = hackSnap.data() as any;
+        setHackathon({ id: hackSnap.id, ...hackData });
 
-        const regsSnap = await getDocs(collection(db, "hackathons", id, "registrations"));
+        // --- Fetch timelines ---
+        const hackTimelines = hackData.timelines || [];
+
+        const submissionTimeline = hackTimelines.find((t: any) =>
+          t.title.toLowerCase().includes("project submission")
+        );
+        setSubmissionOpen(submissionTimeline?.status === "ongoing");
+
+        const registrationTimeline = hackTimelines.find((t: any) =>
+          t.title.toLowerCase().includes("registration")
+        );
+        setRegistrationOpen(registrationTimeline?.status === "ongoing");
+
+        // --- Individual Registration ---
+        const regsSnap = await getDocs(
+          collection(db, "hackathons", id, "registrations")
+        );
         const regDoc = regsSnap.docs.find((r) => r.data().userId === user.id);
-        if (regDoc) {
-          setIsIndividual(true);
-          setLoading(false);
-          return;
-        }
+        setIsIndividual(!!regDoc);
 
-        const teamsSnap = await getDocs(collection(db, "hackathons", id, "teams"));
+        // --- Teams ---
+        const teamsSnap = await getDocs(
+          collection(db, "hackathons", id, "teams")
+        );
         const found = teamsSnap.docs.find((t) => {
           const d = t.data() as TeamDoc;
           return Array.isArray(d.members) && d.members.includes(user.id);
@@ -84,6 +111,7 @@ export default function HackathonManagement() {
           setTeam(data);
           setIsLeader(data.leaderId === user.id);
           setNewTeamName(data.name || "");
+
           const members: UserData[] = [];
           for (const memberId of data.members || []) {
             const uSnap = await getDoc(doc(db, "users", memberId));
@@ -93,6 +121,8 @@ export default function HackathonManagement() {
           setTeamMembers(members);
         } else {
           setTeam(null);
+          setTeamMembers([]);
+          setIsLeader(false);
         }
       } catch (err) {
         console.error(err);
@@ -113,10 +143,38 @@ export default function HackathonManagement() {
         members: arrayRemove(memberId),
       });
       setTeamMembers((prev) => prev.filter((m) => m.id !== memberId));
-      setTeam((t) => (t ? { ...t, members: (t.members || []).filter((m) => m !== memberId) } : t));
+      setTeam((t) =>
+        t ? { ...t, members: (t.members || []).filter((m) => m !== memberId) } : t
+      );
     } catch (err) {
       console.error(err);
       alert("Failed to remove member.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveProjectDescription = async () => {
+    if (!submissionOpen) return alert("Project submission is not open yet.");
+    setSaving(true);
+    try {
+      if (teamId) {
+        await updateDoc(doc(db, "hackathons", id!, "teams", teamId), { projectDescription });
+      } else if (isIndividual) {
+        const regsSnap = await getDocs(
+          collection(db, "hackathons", id!, "registrations")
+        );
+        const regDoc = regsSnap.docs.find((r) => r.data().userId === user.id);
+        if (regDoc) {
+          await updateDoc(doc(db, "hackathons", id!, "registrations", regDoc.id), {
+            projectDescription,
+          });
+        }
+      }
+      alert("Project description saved!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save project description.");
     } finally {
       setSaving(false);
     }
@@ -135,6 +193,49 @@ export default function HackathonManagement() {
       alert("Failed to update team name");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleUploadPPT = async () => {
+    if (!pptFile) return alert("Please select a PPT file");
+    if (!submissionOpen) return alert("Project submission is not open yet.");
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", pptFile);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`,
+        { method: "POST", body: formData }
+      );
+
+      if (!res.ok) throw new Error("Upload failed");
+
+      const data = await res.json();
+      const pptUrl = data.secure_url;
+
+      if (teamId) {
+        await updateDoc(doc(db, "hackathons", id!, "teams", teamId), { pptUrl });
+        setTeam((t) => (t ? { ...t, pptUrl } : t));
+      } else if (isIndividual) {
+        const regsSnap = await getDocs(
+          collection(db, "hackathons", id!, "registrations")
+        );
+        const regDoc = regsSnap.docs.find((r) => r.data().userId === user.id);
+        if (regDoc) {
+          await updateDoc(doc(db, "hackathons", id!, "registrations", regDoc.id), { pptUrl });
+        }
+      }
+
+      alert("PPT uploaded successfully!");
+      setPptFile(null);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to upload PPT. Check Cloudinary preset and file.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -157,13 +258,21 @@ export default function HackathonManagement() {
     }
   };
 
+  // Derived state for team submission eligibility
+  const canSubmitTeam =
+    isLeader && registrationOpen && (team?.members?.length || 0) >= 4 && !team?.submitted;
+
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <LoadingSpinner size="lg" />
       </div>
     );
-  if (!hackathon) return <p className="text-center mt-12 text-red-500">Hackathon not found.</p>;
+
+  if (!hackathon)
+    return (
+      <p className="text-center mt-12 text-red-500">Hackathon not found.</p>
+    );
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6 py-20">
@@ -171,16 +280,21 @@ export default function HackathonManagement() {
       <div className="bg-gray-800 text-white rounded-2xl p-6 shadow-lg flex flex-col md:flex-row md:justify-between md:items-center">
         <div>
           <h1 className="text-3xl font-bold">{hackathon.name}</h1>
-          {hackathon.description && <p className="text-gray-300 mt-1">{hackathon.description}</p>}
+          {hackathon.description && (
+            <p className="text-gray-300 mt-1">{hackathon.description}</p>
+          )}
         </div>
       </div>
 
-      {/* Individual Registration */}
+      {/* Individual or Team */}
       {isIndividual ? (
         <div className="bg-gray-700 p-6 rounded-2xl shadow transition">
-          <h2 className="text-xl font-semibold mb-2 text-green-400">You are registered individually ✅</h2>
+          <h2 className="text-xl font-semibold mb-2 text-green-400">
+            You are registered individually ✅
+          </h2>
           <p className="text-gray-300">
-            <span className="font-medium">Name:</span> {user.name} • <span className="font-medium">Email:</span> {user.email}
+            <span className="font-medium">Name:</span> {user.name} •{" "}
+            <span className="font-medium">Email:</span> {user.email}
           </p>
         </div>
       ) : team ? (
@@ -188,7 +302,9 @@ export default function HackathonManagement() {
           {/* Team Info */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center">
             <div>
-              <h2 className="text-2xl font-bold text-indigo-300">{team.name || "(No Name)"}</h2>
+              <h2 className="text-2xl font-bold text-indigo-300">
+                {team.name || "(No Name)"}
+              </h2>
               <p className="text-sm text-gray-400 mt-1">
                 Team code:{" "}
                 <span
@@ -203,7 +319,9 @@ export default function HackathonManagement() {
                   {teamId} (Click to copy)
                 </span>
               </p>
-              <p className="text-sm mt-1 text-gray-400">Submitted: {team.submitted ? "Yes" : "No"}</p>
+              <p className="text-sm mt-1 text-gray-400">
+                Submitted: {team.submitted ? "Yes" : "No"}
+              </p>
               <p className="text-sm mt-1 text-gray-400">
                 Status:{" "}
                 {team.submitted
@@ -235,18 +353,29 @@ export default function HackathonManagement() {
                 </button>
                 <button
                   onClick={handleSubmitTeam}
-                  disabled={saving || !!team.submitted}
+                  disabled={!canSubmitTeam || saving}
                   className={`px-4 py-2 rounded-xl font-medium transition ${
-                    team.submitted
+                    !canSubmitTeam
                       ? "bg-gray-600 cursor-not-allowed text-gray-300"
                       : "bg-green-500 hover:bg-green-600 text-white"
                   }`}
                 >
-                  {team.submitted ? "Submitted" : "Submit Team"}
+                  {team?.submitted ? "Submitted" : "Submit Team"}
                 </button>
               </div>
             )}
           </div>
+
+          {/* Warning for team submission */}
+          {!canSubmitTeam && isLeader && !team?.submitted && (
+            <p className="text-yellow-400 mt-2 text-sm">
+              {team?.members?.length < 4
+                ? "At least 4 members required to submit the team."
+                : !registrationOpen
+                ? "Registration closed. Cannot submit team."
+                : ""}
+            </p>
+          )}
 
           {/* Team Members */}
           <div>
@@ -258,7 +387,9 @@ export default function HackathonManagement() {
                   className="flex justify-between items-center p-3 bg-gray-700 rounded-xl shadow-sm"
                 >
                   <div>
-                    <div className="font-semibold text-gray-200">{m.name || m.email || m.id}</div>
+                    <div className="font-semibold text-gray-200">
+                      {m.name || m.email || m.id}
+                    </div>
                     <div className="text-xs text-gray-400">{m.email}</div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -282,7 +413,9 @@ export default function HackathonManagement() {
         </div>
       ) : (
         <div className="bg-gray-700 p-6 rounded-2xl shadow transition">
-          <h2 className="text-lg font-semibold mb-2 text-yellow-400">You are not registered yet ⚠️</h2>
+          <h2 className="text-lg font-semibold mb-2 text-yellow-400">
+            You are not registered yet ⚠️
+          </h2>
           <button
             onClick={() => navigate(`/hackathon/${id}`)}
             className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition"
@@ -291,6 +424,98 @@ export default function HackathonManagement() {
           </button>
         </div>
       )}
+
+      {/* PPT Upload Section */}
+      <div className="relative bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col gap-6 transition-all duration-300">
+        {/* Overlay before submission */}
+        {!submissionOpen && !team?.submitted && (
+          <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
+            <p className="text-yellow-400 font-semibold text-lg text-center">
+              Project submission is not active yet ⚠️
+            </p>
+          </div>
+        )}
+
+        {/* Overlay after submission */}
+        {!submissionOpen && team?.submitted && (
+          <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-10 flex items-center justify-center rounded-2xl">
+            <p className="text-blue-400 font-semibold text-lg text-center">
+              Submission received ✅<br />
+              Wait for your result to be shortlisted.
+            </p>
+          </div>
+        )}
+
+        {/* Live Badge */}
+        {submissionOpen && !team?.submitted && (
+          <span className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
+            LIVE NOW
+          </span>
+        )}
+
+        {/* PPT Upload */}
+        <div className="flex flex-col md:flex-row md:items-center md:gap-4 z-0">
+          <div className="flex-1">
+            <label className="block text-gray-200 font-medium mb-2">
+              Upload Your PPT (must be .pptx)
+            </label>
+            <input
+              type="file"
+              accept=".ppt,.pptx,.pdf"
+              onChange={(e) => setPptFile(e.target.files?.[0] || null)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 bg-gray-900 text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              disabled={!submissionOpen || !!team?.submitted}
+            />
+            {(team?.pptUrl || isIndividual) && (
+              <a
+                href={team?.pptUrl || ""}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 underline mt-2 inline-block"
+              >
+                View Submitted PPT
+              </a>
+            )}
+          </div>
+          <button
+            onClick={handleUploadPPT}
+            disabled={uploading || !pptFile || !submissionOpen || !!team?.submitted}
+            className={`mt-4 md:mt-0 px-6 py-3 rounded-xl font-medium transition duration-300 ${
+              submissionOpen && !team?.submitted
+                ? "bg-green-500 hover:bg-green-600 text-white shadow-lg"
+                : "bg-gray-600 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            {uploading ? "Uploading..." : "Upload PPT"}
+          </button>
+        </div>
+
+        {/* Project Description */}
+        <div className="flex flex-col md:flex-row md:items-start md:gap-4 z-0">
+          <div className="flex-1">
+            <label className="block text-gray-200 font-medium mb-2">Brief about idea</label>
+            <textarea
+              value={projectDescription}
+              onChange={(e) => setProjectDescription(e.target.value)}
+              rows={5}
+              placeholder="Briefly describe your project..."
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 bg-gray-900 text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none shadow-sm"
+              disabled={!submissionOpen || !!team?.submitted}
+            />
+          </div>
+          <button
+            onClick={handleSaveProjectDescription}
+            disabled={!submissionOpen || saving || !!team?.submitted}
+            className={`mt-4 md:mt-0 px-6 py-3 rounded-xl font-medium transition duration-300 ${
+              submissionOpen && !team?.submitted
+                ? "bg-blue-500 hover:bg-blue-600 text-white shadow-lg"
+                : "bg-gray-600 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            {saving ? "Saving..." : "submit Description"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

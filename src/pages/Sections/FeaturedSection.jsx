@@ -14,14 +14,14 @@ import Col5 from "../../assets/Colleges/Col5.png";
 
 // Alternative with image sources
 const imageLogos = [
-  {
-    src: Col1,
-    alt: "Company 1",
-    href: "https://en.wikipedia.org/wiki/Dayalbagh_Educational_Institute",
-  },
+  // {
+  //   src: Col1,
+  //   alt: "Company 1",
+  //   href: "https://en.wikipedia.org/wiki/Dayalbagh_Educational_Institute",
+  // },
   { src: Col2, alt: "Company 2", href: "https://dbrau.ac.in/" },
-  { src: Col3, alt: "Company 3", href: "https://rbscollegeagra.edu.in/" },
-  { src: Col5, alt: "Company 5", href: "https://sjcagra.ac.in/" },
+  // { src: Col3, alt: "Company 3", href: "https://rbscollegeagra.edu.in/" },
+  // { src: Col5, alt: "Company 5", href: "https://sjcagra.ac.in/" },
 ];
 function FeaturedSection() {
   return (

@@ -18,7 +18,8 @@ import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 type Hackathon = { id: string; name: string; description: string };
 type User = {
-  id: string;
+  id?: string; // auth context may provide uid
+  uid?: string;
   name: string;
   email: string;
   github?: string;
@@ -43,9 +44,7 @@ const RegisterHackathon: React.FC = () => {
   const [hackathon, setHackathon] = useState<Hackathon | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [registering, setRegistering] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<
-    "individual" | "createTeam" | "joinTeam"
-  >("individual");
+  const [activeTab, setActiveTab] = useState<"individual" | "createTeam" | "joinTeam">("individual");
 
   const [github, setGithub] = useState<string>("");
   const [linkedin, setLinkedin] = useState<string>("");
@@ -56,32 +55,28 @@ const RegisterHackathon: React.FC = () => {
   const [createdTeamCode, setCreatedTeamCode] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
 
+  // Fetch hackathon & registration info
   useEffect(() => {
     if (!hackathonId || !user) return;
+
     const fetchHackathon = async () => {
       setLoading(true);
       try {
         const hackSnap = await getDoc(doc(db, "hackathons", hackathonId));
         if (hackSnap.exists())
-          setHackathon({
-            id: hackSnap.id,
-            ...(hackSnap.data() as Omit<Hackathon, "id">),
-          });
+          setHackathon({ id: hackSnap.id, ...(hackSnap.data() as Omit<Hackathon, "id">) });
 
+        // Check individual registration
         const regSnap = await getDocs(
-          query(
-            collection(db, "hackathons", hackathonId, "registrations"),
-            where("userId", "==", user.id)
-          )
+          query(collection(db, "hackathons", hackathonId, "registrations"), where("userId", "==", user.id || user.uid))
         );
         if (!regSnap.empty) setAlreadyRegistered(true);
 
-        const teamsSnap = await getDocs(
-          collection(db, "hackathons", hackathonId, "teams")
-        );
+        // Check team registration
+        const teamsSnap = await getDocs(collection(db, "hackathons", hackathonId, "teams"));
         teamsSnap.docs.forEach((t) => {
           const tData = t.data() as Team;
-          if (tData.members.includes(user.id)) {
+          if (tData.members.includes(user.id || user.uid || "")) {
             setAlreadyRegistered(true);
             setCreatedTeamCode(t.id);
           }
@@ -91,32 +86,40 @@ const RegisterHackathon: React.FC = () => {
       }
       setLoading(false);
     };
+
     fetchHackathon();
   }, [hackathonId, user]);
 
+  // Individual registration
   const handleIndividualRegister = async () => {
-    if (!user || !hackathonId) return;
+    if (!user || !(user.id || user.uid)) {
+      alert("User not loaded yet!");
+      return;
+    }
     if (!github.trim() || !linkedin.trim() || !college.trim()) {
       alert("Please provide GitHub, LinkedIn, and College Name!");
       return;
     }
+
     setRegistering(true);
     try {
-      await addDoc(collection(db, "hackathons", hackathonId, "registrations"), {
-        userId: user.id,
-        name: user.name,
-        email: user.email,
+      await addDoc(collection(db, "hackathons", hackathonId!, "registrations"), {
+        userId: user.id || user.uid!,
+        name: user.name || "",
+        email: user.email || "",
         github: github.trim(),
         linkedin: linkedin.trim(),
         college: college.trim(),
         type: "individual",
         createdAt: serverTimestamp(),
       });
-      await updateDoc(doc(db, "users", user.id), {
-        github: github.trim(),
-        linkedin: linkedin.trim(),
-        college: college.trim(),
-      });
+
+      // await updateDoc(doc(db, "users", user.id || user.uid!), {
+      //   github: github.trim(),
+      //   linkedin: linkedin.trim(),
+      //   college: college.trim(),
+      // });
+
       alert("Registered individually successfully!");
       navigate(`/hackathon/${hackathonId}/manage`);
     } catch (err) {
@@ -126,36 +129,32 @@ const RegisterHackathon: React.FC = () => {
     setRegistering(false);
   };
 
+  // Team creation
   const handleCreateTeam = async () => {
-    if (!user || !hackathonId) return;
-    if (
-      !teamName.trim() ||
-      !github.trim() ||
-      !linkedin.trim() ||
-      !college.trim()
-    ) {
+    if (!user || !(user.id || user.uid)) return;
+    if (!teamName.trim() || !github.trim() || !linkedin.trim() || !college.trim()) {
       alert("Please fill all fields for team creation!");
       return;
     }
+
     setRegistering(true);
     try {
-      const teamDoc = await addDoc(
-        collection(db, "hackathons", hackathonId, "teams"),
-        {
-          name: teamName,
-          leaderId: user.id,
-          members: [user.id],
-          github: github.trim(),
-          linkedin: linkedin.trim(),
-          college: college.trim(),
-          createdAt: serverTimestamp(),
-        }
-      );
-      await updateDoc(doc(db, "users", user.id), {
+      const teamDoc = await addDoc(collection(db, "hackathons", hackathonId!, "teams"), {
+        name: teamName.trim(),
+        leaderId: user.id || user.uid!,
+        members: [user.id || user.uid!],
         github: github.trim(),
         linkedin: linkedin.trim(),
         college: college.trim(),
+        createdAt: serverTimestamp(),
       });
+
+      // await updateDoc(doc(db, "users", user.id || user.uid!), {
+      //   github: github.trim(),
+      //   linkedin: linkedin.trim(),
+      //   college: college.trim(),
+      // });
+
       setCreatedTeamCode(teamDoc.id);
       alert(`Team created! Your code: ${teamDoc.id}`);
       navigate(`/hackathon/${hackathonId}/manage`);
@@ -166,18 +165,21 @@ const RegisterHackathon: React.FC = () => {
     setRegistering(false);
   };
 
+  // Join team
   const handleJoinTeam = async () => {
-    if (!user || !hackathonId || !teamCode.trim()) return;
+    if (!user || !(user.id || user.uid) || !teamCode.trim()) return;
+
     setRegistering(true);
     try {
-      const teamRef = doc(db, "hackathons", hackathonId, "teams", teamCode);
+      const teamRef = doc(db, "hackathons", hackathonId!, "teams", teamCode);
       const teamSnap = await getDoc(teamRef);
       if (!teamSnap.exists()) {
         alert("Invalid team code!");
         setRegistering(false);
         return;
       }
-      await updateDoc(teamRef, { members: arrayUnion(user.id) });
+
+      await updateDoc(teamRef, { members: arrayUnion(user.id || user.uid!) });
       alert("Joined team successfully!");
       navigate(`/hackathon/${hackathonId}/manage`);
     } catch (err) {
@@ -196,14 +198,12 @@ const RegisterHackathon: React.FC = () => {
 
   if (loading) return <LoadingSpinner size="lg" />;
   if (!hackathon)
-    return (
-      <p className="text-center mt-12 text-red-500">Hackathon not found.</p>
-    );
+    return <p className="text-center mt-12 text-red-500">Hackathon not found.</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 py-12 sm:py-20">
       <div className="max-w-4xl mx-auto">
-        {/* Header Section */}
+        {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-block px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
             <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
@@ -218,91 +218,28 @@ const RegisterHackathon: React.FC = () => {
           </p>
         </div>
 
-        {/* Main Card */}
+        {/* Registration Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           {alreadyRegistered ? (
-            <div className="p-8 sm:p-12">
-              <div className="text-center space-y-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
-                  <svg
-                    className="w-8 h-8 text-green-600 dark:text-green-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    Registration Confirmed
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    You're all set for this hackathon!
+            <div className="p-8 sm:p-12 text-center">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Registration Confirmed
+              </h2>
+              {createdTeamCode && (
+                <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Your Team Code
                   </p>
-                </div>
-
-                {createdTeamCode && (
-                  <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-700">
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      Your Team Code
-                    </p>
-                    <div className="flex items-center justify-center gap-3">
-                      <code className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-lg font-semibold text-blue-600 dark:text-blue-400">
-                        {createdTeamCode}
-                      </code>
-                      <button
-                        onClick={copyTeamCode}
-                        className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
-                      >
-                        {copied ? (
-                          <>
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            Copied
-                          </>
-                        ) : (
-                          <>
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                              />
-                            </svg>
-                            Copy
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
-                      Share this code with your team members to join
-                    </p>
+                  <div className="flex items-center justify-center gap-3">
+                    <code className="px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-lg font-semibold text-blue-600 dark:text-blue-400">
+                      {createdTeamCode}
+                    </code>
+                    <button onClick={copyTeamCode} className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2">
+                      {copied ? "Copied" : "Copy"}
+                    </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ) : (
             <>
@@ -316,52 +253,34 @@ const RegisterHackathon: React.FC = () => {
                         activeTab === tab
                           ? "text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-800"
                           : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
-                      } ${
-                        activeTab === tab &&
-                        "sm:border-b-2 sm:border-blue-600 dark:sm:border-blue-400"
-                      } rounded-lg sm:rounded-none`}
+                      } ${activeTab === tab && "sm:border-b-2 sm:border-blue-600 dark:sm:border-blue-400"} rounded-lg sm:rounded-none`}
                       onClick={() => setActiveTab(tab as any)}
                     >
-                      {tab === "individual"
-                        ? "Individual"
-                        : tab === "createTeam"
-                        ? "Create Team"
-                        : "Join Team"}
+                      {tab === "individual" ? "Individual" : tab === "createTeam" ? "Create Team" : "Join Team"}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Form Content */}
+              {/* Form */}
               <div className="p-6 sm:p-10">
-                <form
-                  className="space-y-6"
-                  onSubmit={(e) => e.preventDefault()}
-                >
-                  {/* Common Fields */}
-                  {(activeTab === "individual" ||
-                    activeTab === "createTeam") && (
+                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                  {(activeTab === "individual" || activeTab === "createTeam") && (
                     <div className="space-y-5">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            GitHub Profile
-                          </label>
-                          <div className="relative">
-                            <input
-                              type="url"
-                              placeholder="https://github.com/username"
-                              value={github}
-                              onChange={(e) => setGithub(e.target.value)}
-                              className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-shadow"
-                            />
-                          </div>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">GitHub Profile</label>
+                          <input
+                            type="url"
+                            placeholder="https://github.com/username"
+                            value={github}
+                            onChange={(e) => setGithub(e.target.value)}
+                            className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-shadow"
+                          />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            LinkedIn Profile
-                          </label>
+                          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">LinkedIn Profile</label>
                           <input
                             type="url"
                             placeholder="https://linkedin.com/in/username"
@@ -373,9 +292,7 @@ const RegisterHackathon: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          College/University
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">College/University</label>
                         <input
                           type="text"
                           placeholder="Enter your institution name"
@@ -387,12 +304,9 @@ const RegisterHackathon: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Team Name Field */}
                   {activeTab === "createTeam" && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Team Name
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Team Name</label>
                       <input
                         type="text"
                         placeholder="Choose a unique team name"
@@ -403,12 +317,9 @@ const RegisterHackathon: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Join Team Field */}
                   {activeTab === "joinTeam" && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Team Code
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Team Code</label>
                       <input
                         type="text"
                         placeholder="Enter the team code shared by your leader"
@@ -416,13 +327,9 @@ const RegisterHackathon: React.FC = () => {
                         onChange={(e) => setTeamCode(e.target.value)}
                         className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-shadow font-mono"
                       />
-                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        Get this code from your team leader
-                      </p>
                     </div>
                   )}
 
-                  {/* Submit Button */}
                   <div className="pt-4">
                     <button
                       type="button"
@@ -442,51 +349,7 @@ const RegisterHackathon: React.FC = () => {
                           : "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/30"
                       }`}
                     >
-                      {registering ? (
-                        <>
-                          <svg
-                            className="animate-spin h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          {activeTab === "individual"
-                            ? "Complete Registration"
-                            : activeTab === "createTeam"
-                            ? "Create Team & Register"
-                            : "Join Team"}
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 7l5 5m0 0l-5 5m5-5H6"
-                            />
-                          </svg>
-                        </>
-                      )}
+                      {registering ? "Processing..." : activeTab === "individual" ? "Complete Registration" : activeTab === "createTeam" ? "Create Team & Register" : "Join Team"}
                     </button>
                   </div>
                 </form>
@@ -494,15 +357,6 @@ const RegisterHackathon: React.FC = () => {
             </>
           )}
         </div>
-
-        {/* Footer Note */}
-        {!alreadyRegistered && (
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              All fields are required to complete your registration
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

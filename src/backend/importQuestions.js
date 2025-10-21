@@ -19,11 +19,11 @@ admin.initializeApp({
 const db = admin.firestore();
 
 // Load questions JSON
-const questionsPath = path.join(__dirname, "topquest.json");
+const questionsPath = path.join(__dirname, "easyquestions.json");
 const questions = JSON.parse(fs.readFileSync(questionsPath, "utf8"));
 
 // Firestore collection name
-const collectionName = "dsaQuestions";
+const collectionName = "hackbasedsaquestions";
 
 async function importData() {
   try {

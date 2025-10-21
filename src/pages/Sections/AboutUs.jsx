@@ -131,7 +131,7 @@ export default function AboutSection() {
     {
       image: person5,
       title: " ",
-      subtitle: "management team",
+      subtitle: "managing director",
       handle: " ",
       borderColor: "#EF4444",
       gradient: "linear-gradient(195deg,#EF4444,#000)",

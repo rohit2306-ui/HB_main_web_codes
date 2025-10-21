@@ -367,7 +367,7 @@ const Dashboard: React.FC = () => {
                   You haven't registered for any hackathons yet
                 </p>
                 <button
-                  onClick={() => navigate("/hackathons")}
+                  onClick={() => navigate("/feed")}
                   className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors"
                 >
                   Explore Hackathons

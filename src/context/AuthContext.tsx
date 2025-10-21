@@ -1,138 +1,101 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import {
   onAuthStateChanged,
-  User as FirebaseUser,
-  GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  User as FirebaseUser,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
-import {
-  createUser,
-  signOutUser,
-  getCurrentUserData,
-} from "../services/authService";
-import { User, AuthContextType, SignupData } from "../types";
+import { auth } from "../config/firebase"; // Make sure Firebase is initialized here
+
+interface SignupData {
+  email: string;
+  password: string;
+  name?: string;
+  username?: string;
+}
+
+interface AuthContextType {
+  user: FirebaseUser | null;
+  loginWithEmail: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (data: SignupData) => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  loading: boolean;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [authLoading, setAuthLoading] = useState(false);
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Firebase user listener
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async (firebaseUser: FirebaseUser | null) => {
-        if (firebaseUser) {
-          const userData = await getCurrentUserData(firebaseUser);
-          setUser(userData);
-        } else {
-          setUser(null);
-        }
-        setInitialLoading(false);
-      }
-    );
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
 
     return () => unsubscribe();
   }, []);
 
-  // Email/password login
   const loginWithEmail = async (email: string, password: string) => {
-    setAuthLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userData = await getCurrentUserData(userCredential.user);
-      setUser(userData);
-      setAuthLoading(false);
-      return { success: true, user: userData };
-    } catch (error: any) {
-      setAuthLoading(false);
-      return { success: false, error: error.message || "Invalid credentials" };
-    }
-  };
-
-  // Google login
-  const loginWithGoogle = async (): Promise<{
-    success: boolean;
-    error?: string;
-  }> => {
-    setAuthLoading(true);
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const firebaseUser = result.user;
-
-      await createUser({
-        email: firebaseUser.email || "",
-        username:
-          firebaseUser.displayName ||
-          firebaseUser.email?.split("@")[0] ||
-          "user",
-        uid: firebaseUser.uid,
-        photoURL: firebaseUser.photoURL || "",
-      });
-
-      setAuthLoading(false);
+      await signInWithEmailAndPassword(auth, email, password);
       return { success: true };
     } catch (error: any) {
-      console.error(error);
-      setAuthLoading(false);
       return { success: false, error: error.message };
     }
   };
 
-  const signup = async (
-    userData: SignupData
-  ): Promise<{ success: boolean; error?: string }> => {
-    setAuthLoading(true);
+  const signup = async (data: SignupData) => {
     try {
-      const result = await createUser(userData);
-      setAuthLoading(false);
-      return result;
-    } catch (error) {
-      setAuthLoading(false);
-      return { success: false, error: "Signup failed" };
+      const userCred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      if (data.name) {
+        await updateProfile(userCred.user, { displayName: data.name });
+      }
+      setUser(userCred.user);
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: error.message };
     }
   };
 
   const logout = async () => {
     try {
-      await signOutUser();
+      await signOut(auth);
       setUser(null);
     } catch (error) {
-      console.error(error);
+      console.error("Logout failed", error);
     }
   };
 
   const value: AuthContextType = {
     user,
-    login: loginWithEmail,
     loginWithEmail,
     signup,
-    logout,
     loginWithGoogle,
-    loading: authLoading,
+    logout,
+    loading,
   };
 
-  if (initialLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <div className="w-10 h-10 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
       </div>
     );
   }

@@ -516,7 +516,7 @@ const PillNav = ({
           })}
           <div className="flex flex-row justify-around">
             <Link
-              to={"/main/profile/1"}
+              to={"dashboard"}
               role="menuitem"
               ref={(el) => {
                 logoRef.current = el;
