@@ -378,8 +378,19 @@ const PillNav = ({
                       className={basePillClasses}
                       style={pillStyle}
                       aria-label={item.ariaLabel || item.label}
-                      onMouseEnter={() => handleEnter(i)}
-                      onMouseLeave={() => handleLeave(i)}
+                      onClick={(e) =>
+                        gsap.fromTo(
+                          e.currentTarget,
+                          { scale: 1 },
+                          {
+                            scale: 1.06,
+                            duration: 0.12,
+                            yoyo: true,
+                            repeat: 1,
+                            ease,
+                          }
+                        )
+                      }
                     >
                       {PillContent}
                     </Link>
@@ -390,8 +401,19 @@ const PillNav = ({
                       className={basePillClasses}
                       style={pillStyle}
                       aria-label={item.ariaLabel || item.label}
-                      onMouseEnter={() => handleEnter(i)}
-                      onMouseLeave={() => handleLeave(i)}
+                      onClick={(e) =>
+                        gsap.fromTo(
+                          e.currentTarget,
+                          { scale: 1 },
+                          {
+                            scale: 1.06,
+                            duration: 0.12,
+                            yoyo: true,
+                            repeat: 1,
+                            ease,
+                          }
+                        )
+                      }
                     >
                       {PillContent}
                     </a>

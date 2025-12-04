@@ -53,19 +53,21 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
-              <div className="flex items-end space-x-1">
-                <img
-                  src={bgLogoBoth}
-                  alt="Company Logo"
-                  className="h-10 w-auto"
-                />
-                <span className="text-green-500 font-bold text-xl">ack</span>
-                <span className="text-white font-bold text-xl">base</span>
+              <div className="flex items-center gap-2.5">
+                <div className="h-9 w-9 rounded-md overflow-hidden flex items-center justify-center bg-black ring-1 ring-white/10">
+                  <img
+                    src={bgLogoBoth}
+                    alt="Hackbase"
+                    className="max-h-6 max-w-6 object-contain"
+                  />
+                </div>
+                <span className="font-semibold leading-none tracking-wide text-green-400">Hack</span>
+                <span className="font-semibold leading-none tracking-wide text-white">base</span>
               </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-end mt-3 ml-10   w-full space-x-8">
+            <div className="hidden md:flex items-center ml-8 w-full space-x-8">
               <button
                 onClick={() => handleScrollToSection(galleryRef)}
                 className="text-gray-300 hover:text-green-400 transition-colors duration-300"
@@ -149,15 +151,24 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Mobile overlay */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-[900] bg-black/40 md:hidden" onClick={() => setIsMenuOpen(false)} />
+        )}
+
         {/* Mobile Menu */}
         <div
-          className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}
+          className={`md:hidden fixed top-16 left-0 right-0 z-[950] flex justify-center transition-all ${
+            isMenuOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
+          }`}
           id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 backdrop-blur-lg bg-black/80">
+          <div className="w-[95%] max-w-[980px] rounded-2xl px-3 py-3 backdrop-blur-xl border border-white/10 bg-black/70 shadow-sm">
             <button
               onClick={() => handleScrollToSection(galleryRef)}
-              className="w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              className="w-full text-left text-gray-300 hover:text-green-400 block px-3 py-2 rounded-md text-base font-medium"
             >
               Gallery
             </button>
@@ -166,8 +177,8 @@ export default function LandingPage() {
                 key={label}
                 to={path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium ${
-                  location.pathname === path ? "bg-gray-900 text-white" : ""
+                className={`text-gray-300 hover:text-green-400 block px-3 py-2 rounded-md text-base font-medium ${
+                  location.pathname === path ? "text-green-400" : ""
                 }`}
               >
                 {label}
@@ -195,10 +206,11 @@ export default function LandingPage() {
           id="hero-section"
           className="relative w-full min-h-screen flex items-center animate-on-scroll fade-in-visible"
         >
-          <div className="absolute left-52 top-52 md:inset-0   bg-black">
+          {/* Decorative orb background */}
+          <div className="absolute inset-0 pointer-events-none">
             <Orb1 />
-            <HeroSection />
           </div>
+          {/* Hero content */}
           <div className="relative z-10 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center md:text-left md:w-3/4 lg:w-3/4">
               <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-8xl bg-gradient-to-b from-white to-theme-200 bg-clip-text text-transparent leading-tight">
