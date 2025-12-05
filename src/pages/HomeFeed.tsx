@@ -16,6 +16,8 @@ import {
   Zap,
   ChevronLeft,
   ChevronRight,
+  Search,
+  Filter,
 } from "lucide-react";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import Footer from "../components/Layout/Footer.jsx";
@@ -196,7 +198,7 @@ const EventCard = ({ event, onClick }) => {
                 }}
                 className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/90 dark:bg-gray-900/75 text-blue-600 dark:text-blue-400 shadow-sm border border-black/10 dark:border-white/10 hover:bg-white"
               >
-                <MapPin className="w-4.5 h-4.5" />
+                <MapPin className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -424,6 +426,10 @@ const HackathonsPage: React.FC = () => {
   const navigate = useNavigate();
   const [hackathons, setHackathons] = useState<Hackathon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [onlineOnly, setOnlineOnly] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   useEffect(() => {
     const fetchHackathons = async () => {
@@ -452,6 +458,34 @@ const HackathonsPage: React.FC = () => {
         <LoadingSpinner size="lg" />
       </div>
     );
+  }
+
+  // Derive visible hackathons based on UI filters
+  const visibleHackathons = hackathons
+    .filter((h) => {
+      const q = searchQuery.trim().toLowerCase();
+      const matchesQuery = q
+        ? (h.name?.toLowerCase().includes(q) || h.description?.toLowerCase().includes(q))
+        : true;
+      const isOnline = (h as any)?.isOnline !== undefined
+        ? Boolean((h as any).isOnline)
+        : !h.place && (!h.city || /online/i.test(String(h.city)));
+      const matchesOnline = onlineOnly ? isOnline : true;
+      const techsRaw = ((h as any)?.techStack ?? (h as any)?.techs ?? (h as any)?.stack ?? []) as any;
+      const techs = Array.isArray(techsRaw)
+        ? techsRaw.map((t) => String(t).trim().toLowerCase())
+        : typeof techsRaw === 'string'
+          ? techsRaw.split(/[,|]/).map((t) => t.trim().toLowerCase())
+          : [];
+      const theme = (h.theme ?? "").toLowerCase();
+      const matchesCategory = selectedCategory === "All"
+        ? true
+        : (theme.includes(selectedCategory.toLowerCase()) || techs.some((t) => t.includes(selectedCategory.toLowerCase())));
+      return matchesQuery && matchesOnline && matchesCategory;
+    });
+
+  if (sortOrder === "oldest") {
+    visibleHackathons.reverse();
   }
 
   return (
@@ -496,6 +530,71 @@ const HackathonsPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Explore & Filters Bar */}
+          <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 rounded-2xl p-4 md:p-5 mb-6">
+            <div className="flex flex-col gap-4">
+              {/* Search input */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 flex-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2">
+                  <Search className="w-4 h-4 text-gray-500" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search hackathons by name or description"
+                    className="w-full bg-transparent text-sm text-gray-700 dark:text-gray-200 placeholder:text-gray-400 focus:outline-none"
+                  />
+                </div>
+                <div className="hidden md:flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setOnlineOnly((v) => !v)}
+                    className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold border transition ${
+                      onlineOnly
+                        ? "bg-green-500 text-white border-green-600"
+                        : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700"
+                    }`}
+                    aria-pressed={onlineOnly}
+                    aria-label="Toggle online hackathons"
+                  >
+                    <Filter className="w-4 h-4" /> Online only
+                  </button>
+                  <div className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Sort</span>
+                    <select
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(e.target.value as any)}
+                      className="bg-transparent text-sm text-gray-700 dark:text-gray-200 focus:outline-none"
+                      aria-label="Sort hackathons"
+                    >
+                      <option value="newest">Newest</option>
+                      <option value="oldest">Oldest</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Category chips */}
+              <div className="flex flex-wrap items-center gap-2">
+                {(["All", "Web", "AI/ML", "Mobile", "Blockchain", "Cloud", "IoT"]).map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
+                      selectedCategory === cat
+                        ? "bg-blue-600 text-white border-blue-700"
+                        : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-blue-400"
+                    }`}
+                    aria-pressed={selectedCategory === cat}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {hackathons.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
               <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
@@ -510,7 +609,8 @@ const HackathonsPage: React.FC = () => {
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {hackathons.map((hackathon) => (
+              {/** Apply client-side filtering and sorting for better UX */}
+              {visibleHackathons.map((hackathon) => (
                 <EventCard
                   key={hackathon.id}
                   event={hackathon}
