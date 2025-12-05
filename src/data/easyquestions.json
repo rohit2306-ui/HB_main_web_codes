@@ -1,0 +1,1524 @@
+[
+  {
+    "id": 1,
+    "title": "Sum of Array",
+    "description": "You are given an array of integers. Your task is to calculate and print the sum of all elements in the array. Read the size of the array, then read its elements, and finally print their sum. This problem tests your ability to iterate through arrays and use arithmetic operations.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line contains n. Second line contains n space-separated integers.",
+    "outputFormat": "Print the sum of all integers.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "15"},
+      {"input": "3\n-1 0 1", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 2,
+    "title": "Maximum Element",
+    "description": "Given an array of integers, print the largest number present in the array. The array can contain positive or negative numbers. Iterate through the elements and compare to find the maximum value. This helps in practicing comparison and conditional statements on arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line contains n. Second line contains n space-separated integers.",
+    "outputFormat": "Print the maximum integer in the array.",
+    "examples": [
+      {"input": "4\n2 7 1 8", "output": "8"},
+      {"input": "3\n-5 -2 -9", "output": "-2"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 3,
+    "title": "Reverse String",
+    "description": "Given a string, print the string with its letters in reverse order. For example, if the input is 'hello', the output should be 'olleh'. This question strengthens your understanding of string operations and loops.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the reversed string.",
+    "examples": [
+      {"input": "hello", "output": "olleh"},
+      {"input": "abc", "output": "cba"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 4,
+    "title": "Count Vowels",
+    "description": "Count and print the number of vowels ('a', 'e', 'i', 'o', 'u') present in the given string. Consider both lowercase and uppercase vowels. This helps you practice looping through strings and checking character conditions.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the number of vowels.",
+    "examples": [
+      {"input": "hello", "output": "2"},
+      {"input": "xyz", "output": "0"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 5,
+    "title": "Sum of Digits",
+    "description": "For a given integer, compute and print the sum of its digits. For example, for 405 the output should be 9 (4+0+5). This task helps practice while loops and number manipulation.",
+    "constraints": "0 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print the sum of its digits.",
+    "examples": [
+      {"input": "123", "output": "6"},
+      {"input": "405", "output": "9"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 6,
+    "title": "Check Palindrome",
+    "description": "Determine whether the given string is a palindrome. A palindrome is a word that reads the same forward and backward. Print 'true' if it is a palindrome, otherwise print 'false'. Useful to practice string traversal from both ends.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print true if it is palindrome, false otherwise.",
+    "examples": [
+      {"input": "racecar", "output": "true"},
+      {"input": "hello", "output": "false"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 7,
+    "title": "Factorial",
+    "description": "Given an integer n, compute the factorial n! which is the product of all numbers from 1 to n (with 0! defined as 1). Factorials are commonly used in mathematics and combinatorics.",
+    "constraints": "0 <= n <= 20",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print n! (factorial of n).",
+    "examples": [
+      {"input": "5", "output": "120"},
+      {"input": "0", "output": "1"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 8,
+    "title": "Fibonacci Number",
+    "description": "Find and print the nth Fibonacci number, where F(0) = 0, F(1) = 1 and F(n) = F(n-1)+F(n-2) for n >= 2. The Fibonacci sequence is widely used in math and programming for practice.",
+    "constraints": "0 <= n <= 30",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print the nth Fibonacci number.",
+    "examples": [
+      {"input": "5", "output": "5"},
+      {"input": "10", "output": "55"}
+    ],
+    "topic": "Math/Recursion"
+  },
+  {
+    "id": 9,
+    "title": "Linear Search",
+    "description": "Given an array and a target value, search for the target in the array using linear search. Print the index (0-based) if found, otherwise print -1. Useful for learning basic searching in arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers. Third line: target element.",
+    "outputFormat": "Print the index (0-based) if found, else -1.",
+    "examples": [
+      {"input": "5\n1 3 5 7 9\n5", "output": "2"},
+      {"input": "3\n10 20 30\n25", "output": "-1"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 10,
+    "title": "Sum of Two Numbers",
+    "description": "Read two integers and print their sum. The numbers may be positive or negative. This problem is useful for practicing reading inputs and simple addition.",
+    "constraints": "-10^9 <= a,b <= 10^9",
+    "inputFormat": "Two space-separated integers a and b.",
+    "outputFormat": "Print a+b.",
+    "examples": [
+      {"input": "3 5", "output": "8"},
+      {"input": "-2 4", "output": "2"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 11,
+    "title": "Count Even and Odd",
+    "description": "Given an array, count and print the numbers of even and odd elements in the array. Useful for practicing modulus operations and array traversal.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Two integers: count_of_even count_of_odd.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "2 3"},
+      {"input": "4\n2 4 6 8", "output": "4 0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 12,
+    "title": "Minimum Element",
+    "description": "Find and print the smallest number present in the array. The array can contain positive, negative, or zero values. This helps practice comparison operations within arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the minimum integer in the array.",
+    "examples": [
+      {"input": "4\n5 1 8 3", "output": "1"},
+      {"input": "3\n-3 -7 -1", "output": "-7"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 13,
+    "title": "Sum of Even Numbers",
+    "description": "Given an array of integers, compute and print the sum of all even numbers in the array. This problem emphasizes use of conditionals and iteration in arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print sum of even integers.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "6"},
+      {"input": "4\n2 4 6 8", "output": "20"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 14,
+    "title": "Check Prime",
+    "description": "Check whether a number is prime. A prime number is only divisible by 1 and itself. Print 'true' if the number is prime, 'false' otherwise. Good for learning loops and number properties.",
+    "constraints": "2 <= n <= 10^6",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "true if n is prime, false otherwise.",
+    "examples": [
+      {"input": "7", "output": "true"},
+      {"input": "10", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 15,
+    "title": "Count Characters",
+    "description": "Given a string of lowercase letters, count how many times each character appears in the string. Print counts in the format: char:count. Useful for frequency counting and using maps or arrays.",
+    "constraints": "1 <= s.length <= 1000, lowercase letters only",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print character counts in the format: char:count",
+    "examples": [
+      {"input": "hello", "output": "h:1 e:1 l:2 o:1"},
+      {"input": "abc", "output": "a:1 b:1 c:1"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 16,
+    "title": "Repeat Characters",
+    "description": "Given a string, print a new string where every character from the original string is repeated twice. For example, 'abc' becomes 'aabbcc'. This tests string manipulation using loops.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the modified string.",
+    "examples": [
+      {"input": "abc", "output": "aabbcc"},
+      {"input": "hello", "output": "hheelllloo"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 17,
+    "title": "Array Reverse",
+    "description": "Reverse the order of all elements in an array and print the resulting array. The last element becomes first and so on. Useful for mastering array traversal and manipulation.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print reversed array.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "5 4 3 2 1"},
+      {"input": "3\n10 20 30", "output": "30 20 10"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 18,
+    "title": "Count Words",
+    "description": "Given a sentence, count and print the number of words in it. Words are separated by spaces. This problem helps you understand splitting strings and counting segments.",
+    "constraints": "1 <= length of sentence <= 1000",
+    "inputFormat": "A single line sentence.",
+    "outputFormat": "Print the number of words.",
+    "examples": [
+      {"input": "Hello world from DSA", "output": "4"},
+      {"input": "OneWord", "output": "1"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 19,
+    "title": "GCD of Two Numbers",
+    "description": "Given two integers, calculate and print their greatest common divisor (GCD). GCD is the largest number that divides both numbers without remainder. Useful for number theory and loops.",
+    "constraints": "1 <= a,b <= 10^6",
+    "inputFormat": "Two space-separated integers a and b.",
+    "outputFormat": "Print GCD of a and b.",
+    "examples": [
+      {"input": "12 18", "output": "6"},
+      {"input": "7 5", "output": "1"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 20,
+    "title": "LCM of Two Numbers",
+    "description": "Given two integers, calculate and print their least common multiple (LCM). LCM is the smallest number that is a multiple of both numbers. This problem often uses the formula LCM(a,b) = (a*b)/GCD(a,b).",
+    "constraints": "1 <= a,b <= 10^6",
+    "inputFormat": "Two space-separated integers a and b.",
+    "outputFormat": "Print LCM of a and b.",
+    "examples": [
+      {"input": "4 6", "output": "12"},
+      {"input": "5 7", "output": "35"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 21,
+    "title": "Sum of Array",
+    "description": "Given an array of integers, print the sum of all elements. This question will test your array iteration and accumulation skills.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the sum of array elements.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "15"},
+      {"input": "3\n-1 0 1", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 22,
+    "title": "Find Maximum",
+    "description": "Find and print the largest integer in an input array. The array may have negative, positive, or zero values. Useful for testing if you can track the largest value across iterations.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the maximum integer in the array.",
+    "examples": [
+      {"input": "4\n5 1 8 3", "output": "8"},
+      {"input": "3\n-3 -7 -1", "output": "-1"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 23,
+    "title": "Sum of Odd Numbers",
+    "description": "Given an array of integers, compute and print the sum of all odd numbers present in the array. This problem focuses on modulus usage and iteration techniques.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print sum of odd integers.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "9"},
+      {"input": "4\n2 4 6 8", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 24,
+    "title": "Check Palindrome String",
+    "description": "Determine if the given string is a palindrome. A palindrome is a word that reads the same forward and backward. Print 'true' if it is, 'false' otherwise.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "true if palindrome, false otherwise.",
+    "examples": [
+      {"input": "racecar", "output": "true"},
+      {"input": "hello", "output": "false"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 25,
+    "title": "Reverse Words",
+    "description": "Given a sentence, reverse the order of words and print the result. For example, 'hello world' should become 'world hello'. This task aids string splitting and recombination skills.",
+    "constraints": "1 <= sentence.length <= 1000",
+    "inputFormat": "A single line sentence.",
+    "outputFormat": "Print sentence with words reversed.",
+    "examples": [
+      {"input": "hello world", "output": "world hello"},
+      {"input": "a b c", "output": "c b a"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 26,
+    "title": "Count Vowels",
+    "description": "Count and print how many vowels (a, e, i, o, u) occur in the given string. Practice string traversal and character checks.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the count of vowels.",
+    "examples": [
+      {"input": "hello", "output": "2"},
+      {"input": "xyz", "output": "0"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 27,
+    "title": "Sum of First N Natural Numbers",
+    "description": "Given a number n, print the sum of the first n natural numbers (1 + 2 + ... + n). This tests work with mathematical formulas and basic looping.",
+    "constraints": "1 <= n <= 10^5",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print the sum.",
+    "examples": [
+      {"input": "5", "output": "15"},
+      {"input": "10", "output": "55"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 28,
+    "title": "Factorial",
+    "description": "Compute the factorial value n!. The factorial n! is the product of all integers from 1 to n (0! = 1). Useful for learning iterative or recursive functions.",
+    "constraints": "0 <= n <= 20",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print n!.",
+    "examples": [
+      {"input": "5", "output": "120"},
+      {"input": "0", "output": "1"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 29,
+    "title": "Sum of Digits",
+    "description": "Given a non-negative integer, print the sum of its digits. This is good practice for while loops and modulus operations.",
+    "constraints": "0 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print sum of digits.",
+    "examples": [
+      {"input": "123", "output": "6"},
+      {"input": "999", "output": "27"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 30,
+    "title": "Count Character Occurrences",
+    "description": "Given a string of lowercase letters and a target character, count how many times the character appears in the string. Print the count.",
+    "constraints": "1 <= s.length <= 1000, lowercase letters only",
+    "inputFormat": "First line: string s. Second line: character c.",
+    "outputFormat": "Print the count of character c in s.",
+    "examples": [
+      {"input": "hello\ne", "output": "1"},
+      {"input": "banana\na", "output": "3"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 31,
+    "title": "Check Prime in Range",
+    "description": "Print all the prime numbers from 1 up to n (inclusive). Use loops to check primality for each number in the range and print space-separated primes.",
+    "constraints": "1 <= n <= 1000",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print all primes separated by spaces.",
+    "examples": [
+      {"input": "10", "output": "2 3 5 7"},
+      {"input": "5", "output": "2 3 5"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 32,
+    "title": "Count Spaces",
+    "description": "Count and print the number of space characters present in a sentence. Tests understanding of string traversal and condition checking.",
+    "constraints": "1 <= sentence.length <= 1000",
+    "inputFormat": "A single line sentence.",
+    "outputFormat": "Print the number of spaces.",
+    "examples": [
+      {"input": "hello world", "output": "1"},
+      {"input": "a b c d", "output": "3"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 33,
+    "title": "Simple Array Product",
+    "description": "Given an array of integers, compute and print the product of all its elements. Shows understanding of loops and multiplication.",
+    "constraints": "1 <= n <= 1000, -10^3 <= nums[i] <= 10^3",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the product.",
+    "examples": [
+      {"input": "3\n1 2 3", "output": "6"},
+      {"input": "4\n2 3 4 5", "output": "120"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 34,
+    "title": "Fibonacci Sequence",
+    "description": "Print the first n Fibonacci numbers, with each number separated by a space. The sequence starts with 0 and 1, and each subsequent number is the sum of the previous two.",
+    "constraints": "1 <= n <= 50",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print first n Fibonacci numbers separated by spaces.",
+    "examples": [
+      {"input": "5", "output": "0 1 1 2 3"},
+      {"input": "7", "output": "0 1 1 2 3 5 8"}
+    ],
+    "topic": "Recursion/Math"
+  },
+  {
+    "id": 35,
+    "title": "First Negative Number",
+    "description": "In a given array, find and print the first negative number. If none exists, print 0. This tests the ability to conditionally scan arrays and break a loop early.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the first negative number or 0.",
+    "examples": [
+      {"input": "5\n1 2 -3 4 5", "output": "-3"},
+      {"input": "3\n1 2 3", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 36,
+    "title": "Count Uppercase Letters",
+    "description": "Count and print the number of uppercase English letters (A-Z) in the string. Useful for practice of character comparison and range checks.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the count of uppercase letters.",
+    "examples": [
+      {"input": "HelloWorld", "output": "2"},
+      {"input": "abc", "output": "0"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 37,
+    "title": "Power of Two Check",
+    "description": "Check whether a given number is a power of two and print 'true' if it is, otherwise print 'false'. Powers of two are numbers like 2, 4, 8, 16, etc.",
+    "constraints": "1 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "true if power of two, false otherwise.",
+    "examples": [
+      {"input": "8", "output": "true"},
+      {"input": "10", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 38,
+    "title": "Swap Two Numbers",
+    "description": "Given two numbers, swap their values without using a third/temporary variable and print the swapped result. This tests thinking about in-place value changes using math or bitwise logic.",
+    "constraints": "1 <= a,b <= 10^6",
+    "inputFormat": "Two space-separated integers a and b.",
+    "outputFormat": "Print swapped numbers a b.",
+    "examples": [
+      {"input": "5 10", "output": "10 5"},
+      {"input": "1 2", "output": "2 1"}
+    ],
+    "topic": "Math/Logic"
+  },
+  {
+    "id": 39,
+    "title": "Remove Duplicates from Array",
+    "description": "Given an array, remove any duplicate elements and print all unique values in the original order of appearance. Best for practicing use of sets and order preservation.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print unique elements separated by space.",
+    "examples": [
+      {"input": "5\n1 2 2 3 3", "output": "1 2 3"},
+      {"input": "4\n4 4 4 4", "output": "4"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 40,
+    "title": "Check Armstrong Number",
+    "description": "Determine whether a number is an Armstrong number. For this problem, a number is Armstrong if the sum of cubes of its digits is equal to the number itself, e.g., 153 is Armstrong (1^3 + 5^3 + 3^3 = 153). Print 'true' or 'false' accordingly.",
+    "constraints": "1 <= n <= 10^6",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "true if Armstrong, false otherwise.",
+    "examples": [
+      {"input": "153", "output": "true"},
+      {"input": "123", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 41,
+    "title": "Count Negative Numbers",
+    "description": "Given an array, count and print the number of negative numbers present. This is useful for practicing array traversal and condition-based counting.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print the count of negative numbers.",
+    "examples": [
+      {"input": "5\n-1 2 -3 4 5", "output": "2"},
+      {"input": "3\n1 2 3", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 42,
+    "title": "Sum of Even Numbers",
+    "description": "Given an array, compute and print the sum of all even integers present in it. Useful for modulus usage and conditional addition.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n space-separated integers.",
+    "outputFormat": "Print sum of even integers.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "6"},
+      {"input": "4\n1 3 5 7", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 43,
+    "title": "Sum Between Indices",
+    "description": "Given an array and two indices l and r, print the sum of numbers in the array from index l to r (inclusive). This problem focuses on using array slices and loops.",
+    "constraints": "1 <= n <= 1000, 0 <= l <= r < n, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers. Third line two integers l r.",
+    "outputFormat": "Print the sum of elements between indices.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5\n1 3", "output": "9"},
+      {"input": "4\n5 6 7 8\n0 2", "output": "18"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 44,
+    "title": "Count Words in Sentence",
+    "description": "Count and print the number of words in a sentence. Words are separated by spaces. Good for practicing string splitting and basic counting.",
+    "constraints": "1 <= sentence.length <= 1000",
+    "inputFormat": "A single line sentence.",
+    "outputFormat": "Print the number of words.",
+    "examples": [
+      {"input": "hello world", "output": "2"},
+      {"input": "a b c d e", "output": "5"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 45,
+    "title": "Check Substring",
+    "description": "Given two strings, determine if the second string is a substring of the first string. Print 'true' if it is, otherwise 'false'. This problem uses string slicing or built-in substring functions.",
+    "constraints": "1 <= s.length, t.length <= 1000",
+    "inputFormat": "First line s. Second line t.",
+    "outputFormat": "true if t is substring of s, false otherwise.",
+    "examples": [
+      {"input": "hello world\nworld", "output": "true"},
+      {"input": "abcde\nfgh", "output": "false"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 46,
+    "title": "Rotate Array by One",
+    "description": "Rotate the array elements right by one position. The last element moves to the front. This is useful for practicing array manipulation and indexing.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print array after rotation.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "5 1 2 3 4"},
+      {"input": "3\n10 20 30", "output": "30 10 20"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 47,
+    "title": "Find Second Largest",
+    "description": "Find and print the second largest element in an array. If there are duplicates, only consider unique values. This problem is useful for practicing array traversal and set/data structure usage.",
+    "constraints": "2 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print the second largest element.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "4"},
+      {"input": "3\n7 7 5", "output": "5"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 48,
+    "title": "Check Anagram",
+    "description": "Check if two strings are anagrams. Anagrams have the same characters in any order and the same frequency. Print 'true' if they are anagrams, otherwise 'false'.",
+    "constraints": "1 <= s.length, t.length <= 1000, lowercase letters only",
+    "inputFormat": "First line s. Second line t.",
+    "outputFormat": "true if anagram, false otherwise.",
+    "examples": [
+      {"input": "listen\nsilent", "output": "true"},
+      {"input": "hello\nworld", "output": "false"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 49,
+    "title": "Count Distinct Elements",
+    "description": "Given an array, count and print the number of distinct elements present. This problem focuses on using sets and understanding uniqueness in arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print the count of distinct elements.",
+    "examples": [
+      {"input": "5\n1 2 2 3 3", "output": "3"},
+      {"input": "4\n4 4 4 4", "output": "1"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 50,
+    "title": "Check Even Odd",
+    "description": "Given a number, print 'Even' if it is an even number or 'Odd' if it is odd. Useful for practicing modulus operations and conditional statements.",
+    "constraints": "1 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Print 'Even' or 'Odd'.",
+    "examples": [
+      {"input": "5", "output": "Odd"},
+      {"input": "8", "output": "Even"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 51,
+    "title": "Reverse Array",
+    "description": "Reverse the elements in the array and print them. The first element moves to last and vice versa. This helps practice array indexing and manipulation.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print reversed array.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "5 4 3 2 1"},
+      {"input": "3\n10 20 30", "output": "30 20 10"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 52,
+    "title": "Sum of Diagonal",
+    "description": "Compute and print the sum of main diagonal elements in a square matrix. Diagonal elements are those at positions (i,i) for all i. Good for understanding nested loops and matrix indexing.",
+    "constraints": "1 <= n <= 20, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "First line n. Next n lines contain n integers each.",
+    "outputFormat": "Print the sum of main diagonal.",
+    "examples": [
+      {"input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "15"},
+      {"input": "2\n1 2\n3 4", "output": "5"}
+    ],
+    "topic": "Matrices"
+  },
+  {
+    "id": 53,
+    "title": "Count Zeros",
+    "description": "Count and print the number of zeros present in an array. This task involves traversal and condition testing for zero values.",
+    "constraints": "1 <= n <= 1000",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print the count of zeros.",
+    "examples": [
+      {"input": "5\n0 1 0 2 0", "output": "3"},
+      {"input": "3\n1 2 3", "output": "0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 54,
+    "title": "GCD of Two Numbers",
+    "description": "Given two positive integers, print their greatest common divisor (GCD). This uses algorithms like Euclid's for efficient computation.",
+    "constraints": "1 <= a,b <= 10^9",
+    "inputFormat": "Two integers a and b.",
+    "outputFormat": "Print GCD of a and b.",
+    "examples": [
+      {"input": "12 18", "output": "6"},
+      {"input": "7 5", "output": "1"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 55,
+    "title": "LCM of Two Numbers",
+    "description": "Given two positive integers, calculate and print their least common multiple (LCM) using the GCD if needed. LCM is the smallest positive integer that is divisible by both numbers.",
+    "constraints": "1 <= a,b <= 10^9",
+    "inputFormat": "Two integers a and b.",
+    "outputFormat": "Print LCM of a and b.",
+    "examples": [
+      {"input": "4 6", "output": "12"},
+      {"input": "7 5", "output": "35"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 56,
+    "title": "Swap Array Ends",
+    "description": "Swap the first and last elements of the array and print the result. The order of other elements should remain same.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print array after swapping ends.",
+    "examples": [
+      {"input": "5\n1 2 3 4 5", "output": "5 2 3 4 1"},
+      {"input": "3\n10 20 30", "output": "30 20 10"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 57,
+    "title": "Check Perfect Square",
+    "description": "Check whether a given integer is a perfect square and print 'true' if yes, otherwise 'false'. A perfect square is a number whose square root is also an integer.",
+    "constraints": "1 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "true if perfect square, false otherwise.",
+    "examples": [
+      {"input": "16", "output": "true"},
+      {"input": "15", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 58,
+    "title": "Count Vowels",
+    "description": "Count and print the number of vowels (a, e, i, o, u) in the entire input string, including spaces and punctuation. Useful for parsing larger strings.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the count of vowels.",
+    "examples": [
+      {"input": "hello world", "output": "3"},
+      {"input": "xyz", "output": "0"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 59,
+    "title": "Maximum Element",
+    "description": "Find and print the maximum element within the given array. Applies comparison logic on arrays.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print maximum element.",
+    "examples": [
+      {"input": "5\n1 3 2 5 4", "output": "5"},
+      {"input": "3\n10 7 8", "output": "10"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 60,
+    "title": "Minimum Element",
+    "description": "Find and print the minimum element within the given array. This is useful for practicing comparisons and array traversal.",
+    "constraints": "1 <= n <= 1000, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print minimum element.",
+    "examples": [
+      {"input": "5\n1 3 2 5 4", "output": "1"},
+      {"input": "3\n10 7 8", "output": "7"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 61,
+    "title": "Rotate String k Times",
+    "description": "Given a string s, rotate it to the right by k positions, where each rotation moves the last character to the front. If k is greater than the string's length, rotate modulo the length of s. Print the final rotated string. This improves understanding of string slicing and indexing.",
+    "constraints": "1 <= s.length <= 1000, 1 <= k <= 10^5",
+    "inputFormat": "First line s. Second line k.",
+    "outputFormat": "Print rotated string.",
+    "examples": [
+      {"input": "hello\n2", "output": "lohel"},
+      {"input": "abcde\n3", "output": "cdeab"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 62,
+    "title": "Maximum Consecutive Ones",
+    "description": "Given a binary array containing only 0s and 1s, find and print the length of the longest sequence of consecutive 1s. This problem practices your skill of tracking streaks and working with Boolean arrays.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n. Second line n space-separated integers (0 or 1).",
+    "outputFormat": "Print length of longest consecutive 1s.",
+    "examples": [
+      {"input": "6\n1 1 0 1 1 1", "output": "3"},
+      {"input": "5\n0 1 0 1 0", "output": "1"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 63,
+    "title": "Find Majority Element",
+    "description": "Given an array of integers, find the element that appears more than n/2 times and print it. If no such element exists, print -1. This teaches efficient counting and the concept of majority.",
+    "constraints": "1 <= n <= 10^4, 0 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print the majority element or -1 if none exists.",
+    "examples": [
+      {"input": "5\n3 3 4 2 3", "output": "3"},
+      {"input": "4\n1 2 3 4", "output": "-1"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 64,
+    "title": "Remove Duplicates From Sorted Array",
+    "description": "Given a sorted array, remove duplicate values in-place so that only unique elements remain. Print the new length followed by the array up to the new length. This helps in understanding in-place array manipulation.",
+    "constraints": "1 <= n <= 10^4, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers (sorted).",
+    "outputFormat": "Print new length and updated array elements.",
+    "examples": [
+      {"input": "5\n1 1 2 2 3", "output": "3\n1 2 3"},
+      {"input": "4\n1 2 2 3", "output": "3\n1 2 3"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 65,
+    "title": "First Non-Repeating Character",
+    "description": "Given a string, find the index of the first character that does not repeat anywhere in the string. If none are found, print -1. This problem is useful for mastering counting character frequency.",
+    "constraints": "1 <= s.length <= 10^4",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Print the index of first non-repeating character.",
+    "examples": [
+      {"input": "leetcode", "output": "0"},
+      {"input": "aabb", "output": "-1"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 66,
+    "title": "Rotate Matrix 90 Degrees",
+    "description": "Given an n x n square matrix, rotate it 90 degrees clockwise in-place and print the resulting matrix. Understand how to access and overwrite elements in a two-dimensional array for this transformation.",
+    "constraints": "2 <= n <= 50, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "First line n. Next n lines each contain n integers.",
+    "outputFormat": "Print rotated matrix.",
+    "examples": [
+      {"input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "7 4 1\n8 5 2\n9 6 3"},
+      {"input": "2\n1 2\n3 4", "output": "3 1\n4 2"}
+    ],
+    "topic": "Matrices"
+  },
+  {
+    "id": 67,
+    "title": "Sum of Diagonal Difference",
+    "description": "For a square matrix, calculate and print the absolute difference between the sum of its main diagonal and secondary diagonal. This question helps in understanding matrix indices and mathematical operations.",
+    "constraints": "2 <= n <= 50, -10^3 <= matrix[i][j] <= 10^3",
+    "inputFormat": "First line n. Next n lines contain n integers each.",
+    "outputFormat": "Print absolute difference.",
+    "examples": [
+      {"input": "3\n1 2 3\n4 5 6\n7 8 9", "output": "0"},
+      {"input": "2\n1 2\n3 4", "output": "0"}
+    ],
+    "topic": "Matrices"
+  },
+  {
+    "id": 68,
+    "title": "Subarray Sum Equals k",
+    "description": "Given an array and a target sum k, count and print the number of continuous subarrays whose elements add up to k. This helps you learn prefix sums and window techniques.",
+    "constraints": "1 <= n <= 10^4, -10^4 <= nums[i] <= 10^4, -10^9 <= k <= 10^9",
+    "inputFormat": "First line n and k. Second line n integers.",
+    "outputFormat": "Print number of subarrays.",
+    "examples": [
+      {"input": "5 5\n1 1 1 2 3", "output": "2"},
+      {"input": "3 3\n1 2 1", "output": "2"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 69,
+    "title": "Longest Common Prefix",
+    "description": "Given a list of strings, find the longest prefix common to all the strings and print it. If no common prefix exists, print an empty string. This builds techniques in string comparison and iteration.",
+    "constraints": "1 <= n <= 1000, 1 <= words[i].length <= 100",
+    "inputFormat": "First line n. Next n lines contain words.",
+    "outputFormat": "Print the longest common prefix or empty string.",
+    "examples": [
+      {"input": "3\nflower\nflow\nflight", "output": "fl"},
+      {"input": "2\ndog\nracecar", "output": ""}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 70,
+    "title": "Check Palindrome Number",
+    "description": "Given an integer, determine if it is a palindrome (the same when read forwards and backwards). Do this without converting the number to a string. Print 'true' or 'false'. Good for learning digit and number manipulation.",
+    "constraints": "0 <= x <= 10^9",
+    "inputFormat": "A single integer x.",
+    "outputFormat": "true if palindrome, false otherwise.",
+    "examples": [
+      {"input": "121", "output": "true"},
+      {"input": "123", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 71,
+    "title": "Two Sum Unique Pairs",
+    "description": "Given an array and a target integer, return all unique pairs of numbers whose sum equals the target value. Each pair should be listed once, regardless of order. This task practices use of hashing and pair-finding.",
+    "constraints": "2 <= n <= 10^4, -10^5 <= nums[i] <= 10^5",
+    "inputFormat": "First line n and target. Second line n integers.",
+    "outputFormat": "List of unique pairs.",
+    "examples": [
+      {"input": "4 6\n1 2 3 4", "output": "[[2,4],[3,3]]"},
+      {"input": "5 5\n1 2 2 3 4", "output": "[[1,4],[2,3]]"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 72,
+    "title": "Intersection of Two Arrays",
+    "description": "Given two arrays, print the list of elements that appear in both arrays. Each common element should be printed once. Learn intersections using sets and hashing.",
+    "constraints": "1 <= n, m <= 10^4, 0 <= nums[i] <= 10^5",
+    "inputFormat": "First line n. Second line n integers. Third line m. Fourth line m integers.",
+    "outputFormat": "List of elements in intersection.",
+    "examples": [
+      {"input": "3\n1 2 2\n3\n2 2 3", "output": "[2]"},
+      {"input": "4\n4 5 6 7\n3\n1 2 3", "output": "[]"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 73,
+    "title": "Check Power of Two",
+    "description": "Given a number, print 'true' if it's a power of two (i.e. 2^k for some k), otherwise print 'false'. This task practices bit manipulation and repeated division.",
+    "constraints": "1 <= n <= 10^9",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "true if power of two, false otherwise.",
+    "examples": [
+      {"input": "16", "output": "true"},
+      {"input": "18", "output": "false"}
+    ],
+    "topic": "Math"
+  },
+  {
+    "id": 74,
+    "title": "Maximum Product of Two Numbers",
+    "description": "Find and print the largest product formed by multiplying any two numbers in the input array. Strengthens skills in sorting and comparing product values.",
+    "constraints": "2 <= n <= 10^4, -10^4 <= nums[i] <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Maximum product value.",
+    "examples": [
+      {"input": "4\n1 2 3 4", "output": "12"},
+      {"input": "5\n-1 -3 2 4 5", "output": "15"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 75,
+    "title": "Valid Parentheses",
+    "description": "Given a string containing various brackets, determine if all brackets are correctly closed and nested. Print 'true' if valid, otherwise 'false'. This teaches stack usage for matching brackets.",
+    "constraints": "1 <= s.length <= 10^4",
+    "inputFormat": "A single string s.",
+    "outputFormat": "true if valid, false otherwise.",
+    "examples": [
+      {"input": "()[]{}", "output": "true"},
+      {"input": "(]", "output": "false"}
+    ],
+    "topic": "Stack"
+  },
+  {
+    "id": 76,
+    "title": "Min Stack",
+    "description": "Design a special stack that supports push, pop, top, and retrieving the minimum element in constant time. Show the results of top and getMin operations in your output. This builds knowledge of stacks and auxiliary structures.",
+    "constraints": "Operations <= 10^4, -10^9 <= val <= 10^9",
+    "inputFormat": "Sequence of operations (push val, pop, top, getMin).",
+    "outputFormat": "Print results of top and getMin operations.",
+    "examples": [
+      {"input": "push 2\npush 0\npush 3\npush 0\ngetMin\npop\ngetMin", "output": "0\n0"}
+    ],
+    "topic": "Stack"
+  },
+  {
+    "id": 77,
+    "title": "Move Zeroes",
+    "description": "Given an array, move all 0's to the end while preserving the order of non-zero elements. Print the modified array. Practice array traversal and in-place updates.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Print array after moving zeros.",
+    "examples": [
+      {"input": "5\n0 1 0 3 12", "output": "1 3 12 0 0"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 78,
+    "title": "Majority Element II",
+    "description": "Find and print all elements in the array that appear more than n/3 times. Multiple results are possible—print all such values. Useful for advanced counting and partitioning.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "List of majority elements.",
+    "examples": [
+      {"input": "5\n3 2 3 2 2", "output": "[2]"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 79,
+    "title": "Climbing Stairs",
+    "description": "Given n steps, print the number of distinct ways to reach the top if you can climb either 1 or 2 steps at a time. Useful for practicing dynamic programming and recurrence relations.",
+    "constraints": "1 <= n <= 45",
+    "inputFormat": "A single integer n.",
+    "outputFormat": "Number of ways.",
+    "examples": [
+      {"input": "2", "output": "2"},
+      {"input": "3", "output": "3"}
+    ],
+    "topic": "Dynamic Programming"
+  },
+  {
+    "id": 80,
+    "title": "Maximum Subarray Sum",
+    "description": "Find and print the maximum sum of any contiguous subarray in the array. Learn efficient solutions like Kadane's algorithm for optimal results.",
+    "constraints": "1 <= n <= 10^4, -10^4 <= nums[i] <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Maximum subarray sum.",
+    "examples": [
+      {"input": "5\n-2 1 -3 4 -1", "output": "4"},
+      {"input": "4\n1 2 3 4", "output": "10"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 81,
+    "title": "Longest Increasing Subsequence",
+    "description": "Given an array, find and print the length of the longest strictly increasing subsequence. Strengthens skills in dynamic programming and array analysis.",
+    "constraints": "1 <= n <= 1000, -10^4 <= nums[i] <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Length of LIS.",
+    "examples": [
+      {"input": "6\n10 9 2 5 3 7", "output": "3"}
+    ],
+    "topic": "Dynamic Programming"
+  },
+  {
+    "id": 82,
+    "title": "Binary Search in Sorted Array",
+    "description": "Given a sorted array and a target value, use binary search to find and print the index of the target. If it does not exist, print -1. Practice efficient searching in sorted arrays.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n and target. Second line n sorted integers.",
+    "outputFormat": "Index of target or -1.",
+    "examples": [
+      {"input": "5 3\n1 2 3 4 5", "output": "2"}
+    ],
+    "topic": "Binary Search"
+  },
+  {
+    "id": 83,
+    "title": "Search Insert Position",
+    "description": "Given a sorted array and a target value, find the index where the target should be inserted to maintain sorted order. Print this index. Tests searching and position-finding.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n and target. Second line n sorted integers.",
+    "outputFormat": "Index to insert target.",
+    "examples": [
+      {"input": "4 3\n1 2 4 5", "output": "2"}
+    ],
+    "topic": "Binary Search"
+  },
+  {
+    "id": 84,
+    "title": "Rotate Array",
+    "description": "Rotate the given array to the right by k steps and print the result. Elements from the end move to the front. Learn circular array techniques.",
+    "constraints": "1 <= n <= 10^4, 0 <= k <= 10^5",
+    "inputFormat": "First line n and k. Second line n integers.",
+    "outputFormat": "Rotated array.",
+    "examples": [
+      {"input": "5 2\n1 2 3 4 5", "output": "4 5 1 2 3"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 85,
+    "title": "Valid Anagram",
+    "description": "Check if two given strings are anagrams—contain exactly the same characters with the same frequency. Print 'true' if yes, otherwise 'false'. This is useful for practicing hash maps and sorting.",
+    "constraints": "1 <= s.length, t.length <= 10^4",
+    "inputFormat": "First line contains string s. Second line contains string t.",
+    "outputFormat": "true if t is an anagram of s, false otherwise.",
+    "examples": [
+      {"input": "anagram\nnagaram", "output": "true"},
+      {"input": "rat\ncar", "output": "false"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 86,
+    "title": "First Unique Character",
+    "description": "Find the index of the first character in a string that does not repeat anywhere in the string. Print its index or -1 if none. This strengthens skills in string traversal and frequency counting.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Index of the first unique character or -1.",
+    "examples": [
+      {"input": "leetcode", "output": "0"},
+      {"input": "loveleetcode", "output": "2"}
+    ],
+    "topic": "Strings"
+  },
+  {
+    "id": 87,
+    "title": "Maximum Depth of Binary Tree",
+    "description": "Given a binary tree represented by its level order array, find and print its maximum depth (also called height). Use recursion or BFS/DFS to find the answer.",
+    "constraints": "Number of nodes <= 10^4",
+    "inputFormat": "Binary tree input as level order array with null for missing nodes.",
+    "outputFormat": "Maximum depth as integer.",
+    "examples": [
+      {"input": "[3,9,20,null,null,15,7]", "output": "3"},
+      {"input": "[1,null,2]", "output": "2"}
+    ],
+    "topic": "Binary Tree"
+  },
+  {
+    "id": 88,
+    "title": "Invert Binary Tree",
+    "description": "Given a binary tree, invert (mirror) the tree and print the level order array of the result. Learn recursive traversal and tree transformations.",
+    "constraints": "Number of nodes <= 10^4",
+    "inputFormat": "Binary tree input as level order array with null for missing nodes.",
+    "outputFormat": "Level order of inverted tree.",
+    "examples": [
+      {"input": "[4,2,7,1,3,6,9]", "output": "[4,7,2,9,6,3,1]"}
+    ],
+    "topic": "Binary Tree"
+  },
+  {
+    "id": 89,
+    "title": "Maximum Depth N-ary Tree",
+    "description": "Given an N-ary tree, represented as nested lists, find the maximum depth (the longest path from the root to any leaf node). Practice recursive traversal on general tree structures.",
+    "constraints": "Number of nodes <= 10^4",
+    "inputFormat": "Tree input as nested arrays [val,[children]].",
+    "outputFormat": "Maximum depth as integer.",
+    "examples": [
+      {"input": "[1,[3,[5,6],[2],[4]]]", "output": "3"}
+    ],
+    "topic": "Tree"
+  },
+  {
+    "id": 90,
+    "title": "Subtree of Another Tree",
+    "description": "Given two binary trees, determine if one is a subtree of the other. Print 'true' if yes, 'false' otherwise. Practice recursion and tree comparison.",
+    "constraints": "Number of nodes <= 5000",
+    "inputFormat": "Two binary trees s and t as level order arrays with null for missing nodes.",
+    "outputFormat": "true if t is a subtree of s, false otherwise.",
+    "examples": [
+      {"input": "[3,4,5,1,2],[4,1,2]", "output": "true"},
+      {"input": "[3,4,5,1,2,null,null,null,null,0],[4,1,2]", "output": "false"}
+    ],
+    "topic": "Binary Tree"
+  },
+  {
+    "id": 91,
+    "title": "Longest Substring Without Repeating Characters",
+    "description": "For a given string, find and print the length of the longest substring that contains no repeating characters. Use sliding window techniques and hashing.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Length of the longest substring.",
+    "examples": [
+      {"input": "abcabcbb", "output": "3"},
+      {"input": "bbbbb", "output": "1"}
+    ],
+    "topic": "Strings / Sliding Window"
+  },
+  {
+    "id": 92,
+    "title": "Container With Most Water",
+    "description": "Given an array of heights, determine the two lines that together with the x-axis form a container such that it contains the maximum amount of water. Practice using two pointers and maximizing areas.",
+    "constraints": "2 <= n <= 10^5, 0 <= height[i] <= 10^4",
+    "inputFormat": "First line contains n. Second line contains n integers.",
+    "outputFormat": "Maximum area as integer.",
+    "examples": [
+      {"input": "9\n1 8 6 2 5 4 8 3 7", "output": "49"}
+    ],
+    "topic": "Arrays / Two Pointers"
+  },
+  {
+    "id": 93,
+    "title": "Minimum Window Substring",
+    "description": "Given strings s and t, print the minimum window of s that contains all characters of t. Use the sliding window and optimize for time.",
+    "constraints": "1 <= s.length, t.length <= 10^5",
+    "inputFormat": "First line string s. Second line string t.",
+    "outputFormat": "Minimum window substring.",
+    "examples": [
+      {"input": "ADOBECODEBANC\nABC", "output": "BANC"}
+    ],
+    "topic": "Strings / Sliding Window"
+  },
+  {
+    "id": 94,
+    "title": "Find Peak Element",
+    "description": "Given an array, print the index of any peak element (which is strictly greater than neighbors). Practice divide-and-conquer and binary search.",
+    "constraints": "1 <= nums.length <= 10^5, -10^9 <= nums[i] <= 10^9",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Index of any peak.",
+    "examples": [
+      {"input": "3\n1 2 3", "output": "2"}
+    ],
+    "topic": "Arrays / Binary Search"
+  },
+  {
+    "id": 95,
+    "title": "Find All Duplicates in Array",
+    "description": "Given an array where 1 <= a[i] <= n, find and print all elements that appear exactly twice. This problem is good for understanding frequency counting and constraints.",
+    "constraints": "1 <= n <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "List of duplicate elements.",
+    "examples": [
+      {"input": "8\n4 3 2 7 8 2 3 1", "output": "[2,3]"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 96,
+    "title": "Merge Intervals",
+    "description": "Given a list of intervals, merge all overlapping intervals and print the result. Learn sorting and iterative merging techniques for range processing.",
+    "constraints": "1 <= intervals.length <= 10^5",
+    "inputFormat": "First line n. Next n lines contain two integers each.",
+    "outputFormat": "Merged intervals as list of pairs.",
+    "examples": [
+      {"input": "4\n1 3\n2 6\n8 10\n15 18", "output": "[[1,6],[8,10],[15,18]]"}
+    ],
+    "topic": "Intervals / Sorting"
+  },
+  {
+    "id": 97,
+    "title": "Find Missing Positive",
+    "description": "Given an unsorted array, find the smallest missing positive integer. Practice rearranging arrays and using index-mapping.",
+    "constraints": "1 <= nums.length <= 10^5, -10^9 <= nums[i] <= 10^9",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Smallest missing positive integer.",
+    "examples": [
+      {"input": "3\n1 2 0", "output": "3"}
+    ],
+    "topic": "Arrays"
+  },
+  {
+    "id": 98,
+    "title": "Decode String",
+    "description": "Given an encoded string (with pattern k[encoded_string]), print the fully decoded output. Practice stack-based parsing and repetition logic.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Decoded string.",
+    "examples": [
+      {"input": "3[a]2[bc]", "output": "aaabcbc"}
+    ],
+    "topic": "Strings / Stack"
+  },
+  {
+    "id": 99,
+    "title": "Course Schedule",
+    "description": "Given the total number of courses and a list of prerequisite pairs, determine if it's possible to finish all courses. Print 'true' if possible, else 'false'. Learn graph cycles and topological sort.",
+    "constraints": "1 <= numCourses <= 10^4, 0 <= prerequisites.length <= 5*10^4",
+    "inputFormat": "First line numCourses. Second line m (number of prerequisites). Next m lines contain pairs [a,b].",
+    "outputFormat": "true if possible, false otherwise.",
+    "examples": [
+      {"input": "2\n1\n1 0", "output": "true"}
+    ],
+    "topic": "Graph / Topological Sort"
+  },
+  {
+    "id": 100,
+    "title": "Number of Islands",
+    "description": "Given a grid map of land and water, print the number of distinct islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. Learn BFS/DFS traversal in 2D arrays.",
+    "constraints": "1 <= m,n <= 300",
+    "inputFormat": "First line m n. Next m lines contain n characters each.",
+    "outputFormat": "Number of islands.",
+    "examples": [
+      {"input": "4 5\n11110\n11010\n11000\n00000", "output": "1"}
+    ],
+    "topic": "Graph / DFS / BFS"
+  },
+  {
+    "id": 101,
+    "title": "Clone Graph",
+    "description": "Given a reference node of an undirected graph, return a clone of the graph (adjacency list). Learn BFS/DFS and data structure copying for graphs.",
+    "constraints": "1 <= nodes <= 1000",
+    "inputFormat": "Adjacency list of graph.",
+    "outputFormat": "Return cloned adjacency list.",
+    "examples": [
+      {"input": "[[2,4],[1,3],[2,4],[1,3]]", "output": "[[2,4],[1,3],[2,4],[1,3]]"}
+    ],
+    "topic": "Graph / BFS / DFS"
+  },
+  {
+    "id": 102,
+    "title": "Longest Consecutive Sequence",
+    "description": "Given an unsorted array, find the length of the longest sequence of consecutive integers present. Learn using hashing for optimal searching.",
+    "constraints": "1 <= nums.length <= 10^5",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Length of longest consecutive sequence.",
+    "examples": [
+      {"input": "6\n100 4 200 1 3 2", "output": "4"}
+    ],
+    "topic": "Arrays / Hashing"
+  },
+  {
+    "id": 103,
+    "title": "Sliding Window Maximum",
+    "description": "Given an array and window size k, print the maximum in each sliding window. Strengthens understanding of deques and optimal window techniques.",
+    "constraints": "1 <= nums.length <= 10^5, 1 <= k <= nums.length",
+    "inputFormat": "First line n k. Second line n integers.",
+    "outputFormat": "List of maximums for each window.",
+    "examples": [
+      {"input": "8 3\n1 3 -1 -3 5 3 6 7", "output": "[3,3,5,5,6,7]"}
+    ],
+    "topic": "Arrays / Deque"
+  },
+  {
+    "id": 104,
+    "title": "Product of Array Except Self",
+    "description": "Given an array, create a new array where each value is the product of all input values except itself. Division is not allowed. Print the result. Use prefix and suffix products for efficiency.",
+    "constraints": "2 <= nums.length <= 10^5, -10^9 <= nums[i] <= 10^9",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Array of products.",
+    "examples": [
+      {"input": "4\n1 2 3 4", "output": "[24,12,8,6]"}
+    ],
+    "topic": "Arrays / Prefix Product"
+  },
+  {
+    "id": 105,
+    "title": "Trapping Rain Water",
+    "description": "Given an elevation map as an array, each value representing wall height, find total water that can be trapped after rain. Learn to solve using left-right max and two pointer techniques.",
+    "constraints": "1 <= n <= 10^5, 0 <= height[i] <= 10^4",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Amount of trapped water.",
+    "examples": [
+      {"input": "12\n0 1 0 2 1 0 1 3 2 1 2 1", "output": "6"}
+    ],
+    "topic": "Arrays / Two Pointers / Stack"
+  },
+  {
+    "id": 106,
+    "title": "Minimum Cost to Merge Stones",
+    "description": "Given an array representing piles of stones and an integer k, repeatedly merge k consecutive piles into one, minimizing the total merge cost. Print the minimum cost. Practice interval DP techniques.",
+    "constraints": "1 <= stones.length <= 100, 2 <= k <= 30",
+    "inputFormat": "First line n k. Second line n integers.",
+    "outputFormat": "Minimum cost of merging.",
+    "examples": [
+      {"input": "3 2\n3 2 4", "output": "17"}
+    ],
+    "topic": "DP / Intervals"
+  },
+  {
+    "id": 107,
+    "title": "Longest Increasing Path in Matrix",
+    "description": "Given a matrix, find and print the length of the longest path such that each step moves to an adjacent cell with a strictly larger value. Use recursion and memoization for efficiency.",
+    "constraints": "1 <= m,n <= 200, 0 <= matrix[i][j] <= 10^5",
+    "inputFormat": "First line m n. Next m lines contain n integers.",
+    "outputFormat": "Length of longest increasing path.",
+    "examples": [
+      {"input": "3 3\n9 9 4\n6 6 8\n2 1 1", "output": "4"}
+    ],
+    "topic": "DFS / DP / Matrix"
+  },
+  {
+    "id": 108,
+    "title": "Alien Dictionary Ordering",
+    "description": "Given a sorted dictionary of alien words, determine one possible character ordering that is valid for the alien language. Use graph construction and topological sorting.",
+    "constraints": "1 <= words.length <= 10^5, 1 <= words[i].length <= 100",
+    "inputFormat": "First line integer n. Next n lines contain words.",
+    "outputFormat": "String of valid character order or empty if impossible.",
+    "examples": [
+      {"input": "5\nwrt\nwrf\ner\nett\nrftt", "output": "wertf"}
+    ],
+    "topic": "Graph / Topological Sort"
+  },
+  {
+    "id": 109,
+    "title": "Palindrome Pairs",
+    "description": "Given a list of unique words, print all pairs of indices (i, j) such that words[i] + words[j] is a palindrome. Practice hashing, string manipulation, and efficient checking.",
+    "constraints": "1 <= words.length <= 5000, 1 <= words[i].length <= 300",
+    "inputFormat": "First line n. Next n lines contain words.",
+    "outputFormat": "List of index pairs [[i,j],...].",
+    "examples": [
+      {"input": "4\nabcd\ndcba\nlls\ns", "output": "[[0,1],[1,0],[2,3]]"}
+    ],
+    "topic": "Strings / Hashing / Trie"
+  },
+  {
+    "id": 110,
+    "title": "Maximal Rectangle",
+    "description": "Given a binary matrix, find and print the area of the largest rectangle that contains only 1's. Use histogram-based logic and stack techniques.",
+    "constraints": "1 <= m,n <= 200",
+    "inputFormat": "First line m n. Next m lines contain n integers (0 or 1).",
+    "outputFormat": "Area of maximal rectangle.",
+    "examples": [
+      {"input": "4 5\n1 0 1 0 0\n1 0 1 1 1\n1 1 1 1 1\n1 0 0 1 0", "output": "6"}
+    ],
+    "topic": "DP / Matrix / Stack"
+  },
+  {
+    "id": 111,
+    "title": "Russian Doll Envelopes",
+    "description": "Given a list of envelopes, find and print the maximum number of envelopes you can nest one inside another. Practice multidimensional sorting and dynamic programming for optimal solution.",
+    "constraints": "1 <= envelopes.length <= 10^5, 1 <= w,h <= 10^5",
+    "inputFormat": "First line n. Next n lines contain two integers w h.",
+    "outputFormat": "Maximum number of nested envelopes.",
+    "examples": [
+      {"input": "4\n5 4\n6 4\n6 7\n2 3", "output": "3"}
+    ],
+    "topic": "DP / LIS / Sorting"
+  },
+  {
+    "id": 112,
+    "title": "Word Ladder II",
+    "description": "Given startWord, endWord, and a word list, find all shortest transformation sequences from startWord to endWord, where each transformation changes exactly one character. Print all shortest paths found.",
+    "constraints": "1 <= wordList.length <= 5000, 1 <= word length <= 10",
+    "inputFormat": "Three lines: startWord, endWord, n (number of words). Next n lines: wordList.",
+    "outputFormat": "List of sequences.",
+    "examples": [
+      {"input": "hit\ncog\n6\nhot\ndot\ndog\nlot\nlog\ncog", "output": "[[hit,hot,dot,dog,cog],[hit,hot,lot,log,cog]]"}
+    ],
+    "topic": "Graph / BFS / Backtracking"
+  },
+  {
+    "id": 113,
+    "title": "Sliding Window Maximum Sum of Minimums",
+    "description": "For each window of size k in an array, compute the sum of the minimum element from each window and print the total. This teaches sliding window, deque, and efficient tracking of window minimums.",
+    "constraints": "1 <= n <= 2*10^5, 1 <= k <= n",
+    "inputFormat": "First line n k. Second line n integers.",
+    "outputFormat": "Sum of minimums of each window.",
+    "examples": [
+      {"input": "5 3\n1 3 -1 -3 5", "output": "-1"}
+    ],
+    "topic": "Arrays / Deque / Sliding Window"
+  },
+  {
+    "id": 114,
+    "title": "Maximum XOR of Two Numbers in Array",
+    "description": "Given an array of integers, find and print the maximum XOR value that can be made by XOR-ing any two numbers in the array. Learn bit manipulation and how trie can be used for fast lookups.",
+    "constraints": "1 <= nums.length <= 10^5, 0 <= nums[i] <= 10^9",
+    "inputFormat": "First line n. Second line n integers.",
+    "outputFormat": "Maximum XOR value.",
+    "examples": [
+      {"input": "6\n3 10 5 25 2 8", "output": "28"}
+    ],
+    "topic": "Trie / Bit Manipulation"
+  },
+  {
+    "id": 115,
+    "title": "Sum of Distances in Tree",
+    "description": "For each node in a tree, calculate and print the sum of distances to every other node. This problem practices graph traversal, DP, and optimal computations on tree structures.",
+    "constraints": "1 <= n <= 10^4",
+    "inputFormat": "First line n. Next n-1 lines: edges u v.",
+    "outputFormat": "List of sums of distances for each node.",
+    "examples": [
+      {"input": "6\n0 1\n0 2\n2 3\n2 4\n2 5", "output": "[8,12,6,10,10,10]"}
+    ],
+    "topic": "Tree / DFS / DP"
+  },
+  {
+    "id": 116,
+    "title": "Serialize and Deserialize Binary Tree",
+    "description": "Design algorithms to serialize and deserialize a binary tree, using level order notation. Serializing encodes tree to a string, deserializing reconstructs the tree. Practice tree traversal and data design.",
+    "constraints": "1 <= nodes <= 10^4",
+    "inputFormat": "Binary tree structure.",
+    "outputFormat": "Serialize output string. Deserialize returns tree root.",
+    "examples": [
+      {"input": "[1,2,3,null,null,4,5]", "output": "[1,2,3,null,null,4,5]"}
+    ],
+    "topic": "Tree / DFS / BFS / Design"
+  },
+  {
+    "id": 117,
+    "title": "Palindrome Partitioning II",
+    "description": "Given a string s, partition it such that every substring is a palindrome and minimize the total number of cuts needed. Print the minimal cuts required. Practice dynamic programming and string analysis.",
+    "constraints": "1 <= s.length <= 1000",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Minimum number of cuts.",
+    "examples": [
+      {"input": "aab", "output": "1"}
+    ],
+    "topic": "DP / Strings"
+  },
+  {
+    "id": 118,
+    "title": "Expression Add Operators",
+    "description": "Given a string of digits and a target integer, print all possible ways to add binary operators '+', '-', or '*' between the digits so that the resulting expression evaluates to the target number. Learn recursion and expression parsing.",
+    "constraints": "1 <= num.length <= 10",
+    "inputFormat": "First line num string. Second line target integer.",
+    "outputFormat": "List of valid expressions.",
+    "examples": [
+      {"input": "123\n6", "output": "[\"1+2+3\",\"1*2*3\"]"}
+    ],
+    "topic": "Backtracking / Recursion / Math"
+  },
+  {
+    "id": 119,
+    "title": "Max Points on a Line",
+    "description": "Given n points in a 2D plane, print the maximum number of points that can be situated on the same straight line. Practice geometry, hashing, and understanding of slopes.",
+    "constraints": "1 <= points.length <= 300",
+    "inputFormat": "First line n. Next n lines: x y coordinates.",
+    "outputFormat": "Maximum points on a single line.",
+    "examples": [
+      {"input": "3\n1 1\n2 2\n3 3", "output": "3"}
+    ],
+    "topic": "Math / Geometry / Hashing"
+  },
+  {
+    "id": 120,
+    "title": "Shortest Palindrome",
+    "description": "Given a string s, print the shortest palindrome you can make by adding characters in front of s. Practice string reversal and palindrome analysis.",
+    "constraints": "1 <= s.length <= 10^5",
+    "inputFormat": "A single string s.",
+    "outputFormat": "Shortest palindrome string.",
+    "examples": [
+      {"input": "aacecaaa", "output": "aaacecaaa"}
+    ],
+    "topic": "Strings / KMP / DP"
+  }
+]
