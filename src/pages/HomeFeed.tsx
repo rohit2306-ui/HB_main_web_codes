@@ -115,6 +115,20 @@ const ImageCarousel: React.FC = () => {
 
 const EventCard = ({ event, onClick }) => {
   const [participants, setParticipants] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Derive online/offline and tech stack gracefully from available fields
+  const isOnline = (event?.isOnline !== undefined)
+    ? Boolean(event.isOnline)
+    : !event?.place && (!event?.city || /online/i.test(String(event.city)));
+
+  const parseTechs = () => {
+    const raw = (event?.techStack ?? event?.techs ?? event?.stack ?? []) as any;
+    if (Array.isArray(raw)) return raw.filter(Boolean).map((t) => String(t).trim());
+    if (typeof raw === 'string') return raw.split(/[,|]/).map((t) => t.trim()).filter(Boolean);
+    return [];
+  };
+  const techs = parseTechs();
 
   useEffect(() => {
     const fetchParticipants = async () => {
@@ -129,19 +143,27 @@ const EventCard = ({ event, onClick }) => {
     fetchParticipants();
   }, [event.id]);
 
+  const handleView = (e) => {
+    e.stopPropagation();
+    setLoading(true);
+    // allow parent navigation to proceed; spinner will show centered inside the card until route changes
+    onClick?.();
+  };
+
   return (
     <div
-      className="group relative cursor-pointer transform transition-all duration-300 hover:-translate-y-2"
-      onClick={onClick}
+      className="group relative cursor-pointer"
+      onClick={() => onClick?.()}
+      aria-label={`Open ${event.name} details`}
     >
-      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 transition-all">
-        {/* Image Section */}
-        <div className="relative overflow-hidden h-48">
+      <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition-transform transform hover:-translate-y-2">
+        {/* Image / Hero */}
+        <div className="relative overflow-hidden h-48 sm:h-56 lg:h-52">
           {event.thumbnail ? (
             <img
               src={event.thumbnail}
               alt={event.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               onError={(e) => {
                 e.currentTarget.src = `https://placehold.co/600x400/3B82F6/FFFFFF?text=${encodeURIComponent(
                   event.name
@@ -150,68 +172,110 @@ const EventCard = ({ event, onClick }) => {
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center">
-              <Trophy className="w-16 h-16 text-white opacity-50" />
+              <Trophy className="w-14 h-14 text-white opacity-70" />
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
 
-          {event.theme && (
-            <div className="absolute top-3 left-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-900 dark:text-white shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-yellow-500" />
-                {event.theme}
+          {/* Online / Offline indicator */}
+          <div className="absolute top-3 left-3">
+            {isOnline ? (
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-green-500 text-white shadow-sm">
+                Online
               </span>
+            ) : (
+              <button
+                type="button"
+                aria-label="Open venue in Maps"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const q = event.place || event.city || event.name;
+                  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(String(q))}`;
+                  window.open(url, '_blank');
+                }}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/90 dark:bg-gray-900/75 text-blue-600 dark:text-blue-400 shadow-sm border border-black/10 dark:border-white/10 hover:bg-white"
+              >
+                <MapPin className="w-4.5 h-4.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Bottom overlay title */}
+          <div className="absolute left-4 right-4 bottom-4">
+            <h3 className="text-white text-lg font-bold line-clamp-1 drop-shadow-sm">
+              {event.name}
+            </h3>
+            <div className="flex items-center gap-3 mt-1 text-sm text-white/90">
+              {event.date && <Calendar className="w-4 h-4" />}
+              <span className="text-sm">{event.date ?? "Date TBA"}</span>
+              <span className="mx-1">·</span>
+              <span className="text-sm">{event.city ?? "Online"}</span>
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Content Section */}
+        {/* Body */}
         <div className="p-5 space-y-3">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            {event.name}
-          </h3>
-
-          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
             {event.description}
           </p>
 
-          {/* Meta Information */}
-          <div className="space-y-2 pt-2">
-            {(event.city || event.place) && (
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                <span className="truncate">
-                  {event.city}
-                  {event.city && event.place && ", "}
-                  {event.place}
-                </span>
+          {/* Tech Stack chips */}
+          {techs.length > 0 && (
+            <div className="mt-2">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">Tech stack</span>
               </div>
-            )}
+              <div className="flex flex-wrap gap-2">
+                {techs.slice(0, 3).map((tech, idx) => (
+                  <span
+                    key={`${tech}-${idx}`}
+                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+                  >
+                    {tech}
+                  </span>
+                ))}
+                {techs.length > 3 && (
+                  <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700">
+                    +{techs.length - 3}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
 
-            <div className="flex items-center justify-between gap-2">
-              {event.date && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400">
-                  <Calendar className="w-4 h-4 text-green-500" />
-                  <span>{event.date}</span>
-                </div>
-              )}
+          <div className="mt-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <Users className="w-4 h-4 text-purple-500" />
+                <span className="font-medium">{participants ?? "—"} participants</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <Trophy className="w-4 h-4 text-yellow-500" />
+                <span className="font-medium">{event.price ?? "Free"}</span>
+              </div>
+            </div>
 
-              {participants !== null && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400">
-                  <Users className="w-4 h-4 text-purple-500" />
-                  <span className="font-medium">{participants}</span>
-                </div>
-              )}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleView}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:shadow-lg transition"
+                aria-label={`View details for ${event.name}`}
+              >
+                Register
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
-
-          {/* CTA Button */}
-          <button className="w-full mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2.5 px-4 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300">
-            View Details
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
+
+        {/* centered spinner overlay while loading */}
+        {loading && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 rounded-2xl">
+            <LoadingSpinner size="lg" />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -404,7 +468,7 @@ const HackathonsPage: React.FC = () => {
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Welcome to the World's{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
               Largest Innovators
             </span>{" "}
             Community
