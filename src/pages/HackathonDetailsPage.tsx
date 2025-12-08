@@ -84,6 +84,10 @@ const HackathonDetailsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const GuidanceRef = useRef<HTMLDivElement>(null);
+  const AboutRef = useRef<HTMLDivElement>(null);
+  const TimelineRef = useRef<HTMLDivElement>(null);
+  const VenueRef = useRef<HTMLDivElement>(null);
+  const PrizesRef = useRef<HTMLDivElement>(null);
 
   const [hackathon, setHackathon] = useState<Hackathon | null>(null);
   const [loading, setLoading] = useState(true);
@@ -184,6 +188,19 @@ const HackathonDetailsPage: React.FC = () => {
     return <p className="text-center mt-12 text-red-500">Hackathon not found.</p>;
 
   const isClosed = hackathon.status === "closed";
+  const isOnline = (hackathon as any)?.isOnline !== undefined
+    ? Boolean((hackathon as any).isOnline)
+    : !hackathon.place && (!hackathon.city || /online/i.test(String(hackathon.city)));
+
+  const parseTechs = () => {
+    const raw = ((hackathon as any)?.techStack ?? (hackathon as any)?.techs ?? (hackathon as any)?.stack ?? []) as any;
+    if (Array.isArray(raw)) return raw.filter(Boolean).map((t) => String(t).trim());
+    if (typeof raw === 'string') return raw.split(/[,|]/).map((t) => t.trim()).filter(Boolean);
+    return [];
+  };
+  const techs = parseTechs();
+
+  const primaryDate = hackathon.timelines?.[0]?.date || (hackathon as any)?.date || "Date TBA";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -254,10 +271,69 @@ const HackathonDetailsPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Info Bar & Quick Nav */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 p-4 md:p-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
+              <Calendar className="w-4 h-4" /> {primaryDate}
+            </span>
+            <button
+              type="button"
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold border transition ${isOnline
+                ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800"
+                : "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800"}`}
+              onClick={() => {
+                if (!isOnline) {
+                  const q = hackathon.place || hackathon.city || hackathon.name;
+                  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(String(q))}`;
+                  window.open(url, '_blank');
+                }
+              }}
+            >
+              {isOnline ? (
+                <>
+                  <Video className="w-4 h-4" /> Online Event
+                </>
+              ) : (
+                <>
+                  <MapPin className="w-4 h-4" /> {hackathon.city || "Venue"}
+                </>
+              )}
+            </button>
+            {hackathon.theme && (
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-pink-50 text-pink-700 border border-pink-200 dark:bg-pink-900/30 dark:text-pink-300 dark:border-pink-800">
+                <Award className="w-4 h-4" /> {hackathon.theme}
+              </span>
+            )}
+            {techs.length > 0 && (
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold bg-gray-50 text-gray-700 border border-gray-200 dark:bg-gray-800/50 dark:text-gray-300 dark:border-gray-700">
+                Tech: {techs.slice(0,3).join(" • ")}{techs.length>3 ? ` +${techs.length-3}` : ""}
+              </span>
+            )}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <button onClick={() => AboutRef.current?.scrollIntoView({behavior:"smooth"})} className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Overview</button>
+            {hackathon.timelines?.length ? (
+              <button onClick={() => TimelineRef.current?.scrollIntoView({behavior:"smooth"})} className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Timeline</button>
+            ) : null}
+            {hackathon.place ? (
+              <button onClick={() => VenueRef.current?.scrollIntoView({behavior:"smooth"})} className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Venue</button>
+            ) : null}
+            {hackathon.guidanceSessions?.length ? (
+              <button onClick={() => GuidanceRef.current?.scrollIntoView({behavior:"smooth"})} className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Guidance</button>
+            ) : null}
+            {hackathon.prizes?.length ? (
+              <button onClick={() => PrizesRef.current?.scrollIntoView({behavior:"smooth"})} className="px-3 py-1.5 text-xs md:text-sm rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Prizes</button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
       {/* Details Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* About */}
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 hover:shadow-2xl transition-shadow duration-300">
+        <div ref={AboutRef} className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 hover:shadow-2xl transition-shadow duration-300">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -321,12 +397,31 @@ const HackathonDetailsPage: React.FC = () => {
               />
             )}
           </div>
+          {techs.length > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">Tech stack</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {techs.slice(0, 6).map((tech, idx) => (
+                  <span key={`${tech}-${idx}`} className="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700">
+                    {tech}
+                  </span>
+                ))}
+                {techs.length > 6 && (
+                  <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700">
+                    +{techs.length - 6}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
      
         {/* Timeline Section */}
 {hackathon.timelines?.length ? (
-  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 mb-12">
+  <div ref={TimelineRef} className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-10 mb-12">
     <div className="text-center mb-10 sm:mb-12">
       <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 sm:mb-3">
         Event Timeline
@@ -419,7 +514,7 @@ const HackathonDetailsPage: React.FC = () => {
 ) : null}
         {/* Theme Section */}
 {hackathon.theme && hackathon.themeImage && (
-  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 mb-12 hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
+  <div ref={AboutRef} className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 mb-12 hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
    <h1 className="text-2xl m-5">theme</h1>
     <img
       src={hackathon.themeImage}
@@ -431,7 +526,7 @@ const HackathonDetailsPage: React.FC = () => {
 
 {/* Venue Section */}
 {hackathon.place && (
-  <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-10 mb-12 hover:shadow-2xl transition-shadow duration-300 text-center">
+  <div ref={VenueRef} className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-800 p-10 mb-12 hover:shadow-2xl transition-shadow duration-300 text-center">
     <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-6">
       Venue
     </h2>
@@ -639,7 +734,7 @@ const HackathonDetailsPage: React.FC = () => {
               </div>
 
               {/* Special Mention */}
-              <div className="mt-16 flex justify-center">
+              <div ref={PrizesRef} className="mt-16 flex justify-center">
                 <div className="group px-8 py-4 border-2 border-cyan-400/50 rounded-2xl bg-gradient-to-r from-cyan-950/50 to-blue-950/50 shadow-xl shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-105 transition-all duration-500 backdrop-blur-sm">
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">💡</span>
