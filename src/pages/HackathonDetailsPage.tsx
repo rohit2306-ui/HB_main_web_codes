@@ -4,7 +4,8 @@ import { db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-import { ArrowRight, Play, Calendar, MapPin, Users, Award, Video } from "lucide-react";
+import { ArrowRight, Play, Calendar, MapPin, Users, Award, Video, Share2, Bookmark } from "lucide-react";
+import useBookmarks from "../hooks/useBookmarks";
 
 type Prize = {
   id?: string;
@@ -88,6 +89,8 @@ const HackathonDetailsPage: React.FC = () => {
   const TimelineRef = useRef<HTMLDivElement>(null);
   const VenueRef = useRef<HTMLDivElement>(null);
   const PrizesRef = useRef<HTMLDivElement>(null);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const [shared, setShared] = useState(false);
 
   const [hackathon, setHackathon] = useState<Hackathon | null>(null);
   const [loading, setLoading] = useState(true);
@@ -509,6 +512,69 @@ const HackathonDetailsPage: React.FC = () => {
           <span className="text-gray-700 dark:text-gray-300 font-medium">Upcoming</span>
         </div>
       </div>
+
+      {/* Sticky CTA: Countdown, Register, Share, Bookmark */}
+      {hackathon && (
+        <div className="hidden lg:block fixed bottom-6 right-6 z-40">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xl rounded-2xl p-4 w-[22rem]">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">Starts in</div>
+                <div className="text-xl font-bold">
+                  {countdown.days}d {countdown.hours}h {countdown.minutes}m
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  toggleBookmark(hackathon.id);
+                }}
+                className={`inline-flex items-center justify-center w-10 h-10 rounded-full border transition ${
+                  isBookmarked(hackathon.id)
+                    ? "bg-yellow-400 text-white border-yellow-500 hover:bg-yellow-500"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+                aria-label={isBookmarked(hackathon.id) ? "Remove bookmark" : "Add bookmark"}
+              >
+                <Bookmark className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex gap-3">
+              {isClosed ? (
+                <div className="flex-1 bg-gray-700/80 text-white font-semibold px-4 py-3 rounded-xl text-center">
+                  Registration Closed
+                </div>
+              ) : (
+                <button
+                  onClick={() =>
+                    navigate(
+                      user
+                        ? `/hackathon/registration/${hackathon.id}/${user?.id}`
+                        : "/login"
+                    )
+                  }
+                  className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-4 py-3 rounded-xl shadow hover:shadow-lg hover:scale-[1.01] transition"
+                >
+                  Register Now
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  setShared(true);
+                  setTimeout(() => setShared(false), 1800);
+                }}
+                className="inline-flex items-center justify-center w-12 h-12 rounded-xl border bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700"
+                aria-label="Copy share link"
+              >
+                <Share2 className="w-5 h-5" />
+              </button>
+            </div>
+            {shared && (
+              <div className="mt-2 text-xs text-green-600 dark:text-green-400">Link copied to clipboard</div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   </div>
 ) : null}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import { Calendar, UserPlus } from 'lucide-react';
+import { Calendar, UserPlus, Users, Trophy, MapPin, Share2, Edit } from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
@@ -79,73 +79,112 @@ const UserProfile: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-900 px-4 py-8 text-gray-100">
-      <div className="max-w-5xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <Button variant="ghost" onClick={() => navigate(-1)}>← Back</Button>
-        </div>
-
-        {/* User Info Card */}
-        <div className="bg-gray-800/70 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <div className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-6 space-y-4 md:space-y-0">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white text-4xl font-bold transition-transform transform hover:scale-105">
-              {user.name.charAt(0)}
-            </div>
-            <div className="flex-1 space-y-2">
-              <h1 className="text-3xl font-bold">{user.name}</h1>
-              <p className="text-gray-400 text-lg">@{user.username}</p>
-
-              {/* Stats */}
-              <div className="flex space-x-6 mt-2 text-gray-300 text-sm">
-                <div className="flex items-center space-x-1 hover:text-indigo-400 transition-colors">
-                  <Calendar className="h-5 w-5" />
-                  <span>Joined {formatDate(user.joinedDate)}</span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Hero */}
+      <div className="relative">
+        <div className="h-40 sm:h-56 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative -mt-16 sm:-mt-20 mb-8 sm:mb-12">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800 p-6 sm:p-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-3xl sm:text-4xl font-bold flex items-center justify-center shadow-lg ring-4 ring-white dark:ring-gray-800">
+                  {user.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="flex items-center space-x-1 hover:text-green-400 transition-colors">
-                  <UserPlus className="h-5 w-5" />
-                  <span>{communities.length} Communities</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{user.name}</h1>
+                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-700">@{user.username}</span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                    <span className="inline-flex items-center gap-2"><Calendar className="w-4 h-4" />Joined {formatDate(user.joinedDate)}</span>
+                    <span className="inline-flex items-center gap-2"><Users className="w-4 h-4" />{communities.length} Communities</span>
+                    <span className="inline-flex items-center gap-2"><Trophy className="w-4 h-4" />{hackathons.length} Hackathons</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-1 hover:text-yellow-400 transition-colors">
-                  <span className="font-semibold">{hackathons.length}</span>
-                  <span>Hackathons</span>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => navigate(-1)} className="px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">Back</button>
+                  <button className="px-3 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 inline-flex items-center gap-2"><Edit className="w-4 h-4" /> Edit Profile</button>
+                  <button onClick={() => navigator.clipboard.writeText(window.location.href)} className="px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 inline-flex items-center gap-2"><Share2 className="w-4 h-4" /> Share</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Communities */}
-        <div className="bg-gray-800/70 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
-          <h2 className="text-2xl font-semibold text-indigo-300 mb-4">Joined Communities</h2>
-          {communities.length === 0 ? (
-            <p className="text-gray-400">Not part of any communities yet.</p>
-          ) : (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {communities.map(comm => (
-                <li key={comm.id} className="p-4 rounded-xl bg-gray-900/40 hover:bg-indigo-700/30 transition transform hover:scale-105 cursor-pointer">
-                  {comm.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left column: Communities */}
+          <div className="lg:col-span-1">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Joined Communities</h2>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Groups you’re a part of</p>
+                </div>
+              </div>
+              <div className="p-6">
+                {communities.length === 0 ? (
+                  <p className="text-gray-600 dark:text-gray-400">Not part of any communities yet.</p>
+                ) : (
+                  <ul className="space-y-3">
+                    {communities.map((comm) => (
+                      <li key={comm.id} className="group p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-indigo-500/50 transition cursor-pointer">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900 dark:text-white">{comm.name}</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">{comm.description}</div>
+                          </div>
+                          <svg className="w-5 h-5 text-gray-400 group-hover:text-indigo-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
 
-        {/* Hackathons */}
-        <div className="bg-gray-800/70 backdrop-blur-md border border-gray-700 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
-          <h2 className="text-2xl font-semibold text-teal-300 mb-4">Registered Hackathons</h2>
-          {hackathons.length === 0 ? (
-            <p className="text-gray-400">No hackathons registered yet.</p>
-          ) : (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {hackathons.map(hack => (
-                <li key={hack.id} className="p-4 rounded-xl bg-gray-900/40 hover:bg-teal-700/30 transition transform hover:scale-105 cursor-pointer">
-                  <span className="font-semibold">{hack.title}</span>
-                  <span className="block text-gray-300 text-sm">{formatDate(hack.date)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          {/* Right column: Hackathons */}
+          <div className="lg:col-span-2">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white">Registered Hackathons</h2>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Your participation history</p>
+                </div>
+              </div>
+              <div className="p-6">
+                {hackathons.length === 0 ? (
+                  <p className="text-gray-600 dark:text-gray-400">No hackathons registered yet.</p>
+                ) : (
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {hackathons.map((hack) => (
+                      <li key={hack.id} className="group p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-yellow-500/50 transition cursor-pointer">
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                            <Calendar className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-1">{hack.title}</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2"><MapPin className="w-3 h-3" /> {formatDate(hack.date)}</div>
+                          </div>
+                          <svg className="w-5 h-5 text-gray-400 group-hover:text-yellow-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

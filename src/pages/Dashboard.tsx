@@ -8,12 +8,14 @@ import {
   Mail,
   Settings,
   LogOut,
+  Bookmark,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import useBookmarks from "../hooks/useBookmarks";
 
 interface Community {
   id: string;
@@ -32,6 +34,7 @@ interface Hackathon {
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { bookmarks } = useBookmarks();
 
   const [loading, setLoading] = useState(true);
   const [friends, setFriends] = useState<number>(0);
@@ -210,6 +213,10 @@ const Dashboard: React.FC = () => {
                   {friends} {friends === 1 ? "Friend" : "Friends"}
                 </span>
               </div>
+              <div className="flex items-center gap-2">
+                <Bookmark className="w-4 h-4" />
+                <span>{bookmarks.length} Bookmarks</span>
+              </div>
             </div>
           </div>
         </div>
@@ -256,6 +263,58 @@ const Dashboard: React.FC = () => {
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
               Total Friends
             </p>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="px-6 sm:px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Quick Actions</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Jump into what matters most.</p>
+          </div>
+          <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button
+              onClick={() => navigate("/feed")}
+              className="group p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:border-purple-300 dark:hover:border-purple-700 transition-all text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">Explore Hackathons</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Find upcoming events to join</p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => navigate("/communities")}
+              className="group p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 transition-all text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">Find Communities</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Connect with peers</p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => navigate("/dsa")}
+              className="group p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Practice DSA</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Sharpen problem-solving</p>
+                </div>
+              </div>
+            </button>
           </div>
         </div>
 

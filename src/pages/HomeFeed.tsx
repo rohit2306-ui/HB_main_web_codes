@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../config/firebase";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Trophy,
   Users,
@@ -18,9 +18,11 @@ import {
   ChevronRight,
   Search,
   Filter,
+  Bookmark,
 } from "lucide-react";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 import Footer from "../components/Layout/Footer.jsx";
+import useBookmarks from "../hooks/useBookmarks";
 
 type Hackathon = {
   id: string;
@@ -118,6 +120,7 @@ const ImageCarousel: React.FC = () => {
 const EventCard = ({ event, onClick }) => {
   const [participants, setParticipants] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
 
   // Derive online/offline and tech stack gracefully from available fields
   const isOnline = (event?.isOnline !== undefined)
@@ -201,6 +204,25 @@ const EventCard = ({ event, onClick }) => {
                 <MapPin className="w-4 h-4" />
               </button>
             )}
+          </div>
+
+          {/* Bookmark toggle */}
+          <div className="absolute top-3 right-3">
+            <button
+              type="button"
+              aria-label={isBookmarked(event.id || event._id || event.name) ? "Remove bookmark" : "Add bookmark"}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleBookmark(event.id || event._id || event.name);
+              }}
+              className={`inline-flex items-center justify-center w-9 h-9 rounded-full border transition shadow-sm ${
+                isBookmarked(event.id || event._id || event.name)
+                  ? "bg-yellow-400 text-white border-yellow-500 hover:bg-yellow-500"
+                  : "bg-white/90 dark:bg-gray-900/75 text-gray-700 dark:text-gray-200 border-black/10 dark:border-white/10 hover:bg-white"
+              }`}
+            >
+              <Bookmark className={`w-4 h-4 ${isBookmarked(event.id || event._id || event.name) ? "fill-white" : ""}`} />
+            </button>
           </div>
 
           {/* Bottom overlay title */}
@@ -424,6 +446,7 @@ const HackathonGuidelines: React.FC = () => {
 const HackathonsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [hackathons, setHackathons] = useState<Hackathon[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -451,6 +474,15 @@ const HackathonsPage: React.FC = () => {
     };
     fetchHackathons();
   }, []);
+
+  // Prefill search from URL query param `q`
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("q");
+    if (q && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [location.search]);
 
   if (loading) {
     return (
