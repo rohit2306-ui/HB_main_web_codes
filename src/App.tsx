@@ -35,6 +35,7 @@ import OpenProjectDetails from "./pages/OpenProjectDetails";
 import Prizes from "./pages/Prizes";
 import DashboardPage from "../src/pages/Dashboardsec/DashboardPage.jsx";
 import AboutSection from "../src/pages/Sections/AboutUs.jsx";
+import Hosthackathon from "./pages/Hosthackathon";
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -82,6 +83,14 @@ function AppContent() {
             <PublicRoute>
               <LoginPage />
             </PublicRoute>
+          }
+        />
+        <Route
+          path="/host-hackathon"
+          element={
+            <ProtectedRoute>
+              <Hosthackathon />
+            </ProtectedRoute>
           }
         />
         <Route
