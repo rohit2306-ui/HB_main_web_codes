@@ -115,12 +115,19 @@ const ModernNavbar = ({ logo, logoAlt = "Logo", items, className = "", logoBg = 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
           <Link
+            to={"/host-hackathon"}
+            className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-800 text-white hover:bg-blue-600 transition-colors"
+          >
+            Host hackathon
+          </Link>
+          <Link
             to={"/dashboard"}
             className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
           >
             Dashboard
           </Link>
-
+          
+         
           {userData && (
             <Link
               to={`/profile/${userData.username}`}
@@ -226,8 +233,19 @@ const ModernNavbar = ({ logo, logoAlt = "Logo", items, className = "", logoBg = 
               </li>
             );
           })}
+           <div className="flex items-center justify-between pt-2">
+            
+            <Link
+              to={"/host-hackathon"}
+              onClick={() => setMobileOpen(false)}
+              className="inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            >
+              host hackathon
+            </Link>
 
+          </div>
           <div className="flex items-center justify-between pt-2">
+            
             <Link
               to={"/dashboard"}
               onClick={() => setMobileOpen(false)}
