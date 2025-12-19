@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { createHackathon } from "../services/hackathonService";
+import { addCreatedHackathonToUser } from "../services/userService";
 import {
   Calendar,
   MapPin,
@@ -108,10 +109,12 @@ const Hosthackathon: React.FC = () => {
         isOnline,
         createdBy: user.uid,
       });
+      // Store reference under user's profile
+      await addCreatedHackathonToUser(user.uid, id);
       navigate(`/hackathon/${id}`);
     } catch (err) {
       console.error(err);
-      setError("Failed to create hackathon. Try again.");
+      setError(err instanceof Error ? err.message : "Failed to create hackathon. Try again.");
     } finally {
       setLoading(false);
     }

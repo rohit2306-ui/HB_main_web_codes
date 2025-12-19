@@ -15,8 +15,13 @@ export type NewHackathon = {
 };
 
 export async function createHackathon(data: NewHackathon) {
+  // Remove undefined fields to avoid FirebaseError
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, v]) => v !== undefined)
+  );
+
   const docRef = await addDoc(collection(db, "hackathons"), {
-    ...data,
+    ...cleanData,
     createdAt: serverTimestamp(),
   });
   return docRef.id;

@@ -5,7 +5,9 @@ import {
   getDoc, 
   query, 
   where, 
-  orderBy 
+  orderBy,
+  setDoc,
+  arrayUnion
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { User } from '../types';
@@ -142,5 +144,23 @@ export const getUserById = async (userId: string): Promise<User | null> => {
   } catch (error) {
     console.error('Error getting user by ID:', error);
     return null;
+  }
+};
+
+// Link a created hackathon to the user's document via an array of IDs
+export const addCreatedHackathonToUser = async (userId: string, hackathonId: string): Promise<void> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await setDoc(
+      userRef,
+      {
+        id: userId,
+        createdHackathons: arrayUnion(hackathonId)
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error('Error linking hackathon to user:', error);
+    throw error;
   }
 };
