@@ -239,7 +239,9 @@ function App() {
         </Router>
       </AuthProvider>
     </ThemeProvider>
+    
   );
 }
+
 
 export default App;

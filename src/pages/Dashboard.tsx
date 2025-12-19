@@ -68,6 +68,9 @@ const Dashboard: React.FC = () => {
       console.error("Error fetching connections:", err);
     }
   };
+   if (!user) {
+    console.log(user.id);
+   }
 
   const loadUserCommunities = async () => {
     if (!user) return;

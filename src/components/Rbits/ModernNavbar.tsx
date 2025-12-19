@@ -118,7 +118,7 @@ const ModernNavbar = ({ logo, logoAlt = "Logo", items, className = "", logoBg = 
             to={"/my-hackathons"}
             className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-800 text-white hover:bg-blue-600 transition-colors"
           >
-            Host hackathon
+            manage hackathons
           </Link>
           <Link
             to={"/host-hackathon"}
