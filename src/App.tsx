@@ -27,6 +27,8 @@ import CommunityChatPage from "./pages/CommunityChatPage";
 import HackathonDetailsPage from "./pages/HackathonDetailsPage";
 import RegisterHackathon from "./pages/RegisterHackathon";
 import HackathonManagement from "./pages/HackathonManagement";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import HostHackathonDashboard from "./pages/HostHackathonDashboard";
 import EventRegistrationPage from "./pages/EventRegistrationPage";
 import DSAQuestionPage from "./pages/DSAQuestionPage";
 import DSAPracticePage from "./pages/DSAPracticePage";
@@ -36,6 +38,7 @@ import Prizes from "./pages/Prizes";
 import DashboardPage from "../src/pages/Dashboardsec/DashboardPage.jsx";
 import AboutSection from "../src/pages/Sections/AboutUs.jsx";
 import Hosthackathon from "./pages/Hosthackathon";
+import MyHackathons from "./pages/MyHackathons";
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
@@ -94,6 +97,23 @@ function AppContent() {
           }
         />
         <Route
+          path="/my-hackathons"
+          element={
+            <ProtectedRoute>
+              <MyHackathons />
+            </ProtectedRoute>
+          }
+        />
+        {/* Alias route for convenience */}
+        <Route
+          path="/my-hackathon"
+          element={
+            <ProtectedRoute>
+              <MyHackathons />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/signup"
           element={
             <PublicRoute>
@@ -147,6 +167,22 @@ function AppContent() {
         <Route path="/events" element={<Notifications />} />
         <Route path="/community/:communityId" element={<CommunityChatPage />} />
         <Route path="/hackathon/:id" element={<HackathonDetailsPage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <SuperAdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/host/hackathon/:id"
+          element={
+            <ProtectedRoute>
+              <HostHackathonDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/hackathon/registration/:hackathonId/:userId"
           element={<RegisterHackathon />}

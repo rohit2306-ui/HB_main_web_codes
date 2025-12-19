@@ -9,6 +9,7 @@ export type NewHackathon = {
   city?: string;
   thumbnail?: string;
   date?: string;
+  closeDate?: string;
   isOnline?: boolean;
   price?: string;
   createdBy: string;

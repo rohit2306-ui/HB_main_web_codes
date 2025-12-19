@@ -80,6 +80,31 @@ const CountdownTimer: React.FC<{
   </div>
 );
 
+// Small helper to display host name from UID
+const HostedBy: React.FC<{ uid?: string }> = ({ uid }) => {
+  const [display, setDisplay] = useState<string>("");
+
+  useEffect(() => {
+    const run = async () => {
+      if (!uid) return;
+      try {
+        const snap = await getDoc(doc(db, "users", uid));
+        if (snap.exists()) {
+          const data = snap.data() as any;
+          setDisplay(data?.name || data?.username || uid);
+        } else {
+          setDisplay(uid);
+        }
+      } catch {
+        setDisplay(uid || "Unknown");
+      }
+    };
+    run();
+  }, [uid]);
+
+  return <p className="text-gray-900 dark:text-white">{display || uid}</p>;
+};
+
 const HackathonDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
@@ -166,11 +191,16 @@ const HackathonDetailsPage: React.FC = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (!hackathon?.timelines?.length) return;
-      const startDateStr = hackathon.timelines[0].date;
-      const eventDate = new Date(startDateStr);
+      // Prefer registration close date for countdown if available
+      const closeDateStr = (hackathon as any)?.closeDate as string | undefined;
+      const targetDate = closeDateStr
+        ? new Date(closeDateStr)
+        : hackathon?.timelines?.length
+        ? new Date(hackathon.timelines[0].date)
+        : undefined;
+      if (!targetDate) return;
       const now = new Date();
-      const diff = eventDate.getTime() - now.getTime();
+      const diff = targetDate.getTime() - now.getTime();
 
       if (diff > 0) {
         setCountdown({
@@ -191,6 +221,13 @@ const HackathonDetailsPage: React.FC = () => {
     return <p className="text-center mt-12 text-red-500">Hackathon not found.</p>;
 
   const isClosed = hackathon.status === "closed";
+  const isRegistrationClosedByDate = (() => {
+    const closeDateStr = (hackathon as any)?.closeDate as string | undefined;
+    if (!closeDateStr) return false;
+    const close = new Date(closeDateStr);
+    return new Date() > close;
+  })();
+  const isClosedEffective = isClosed || isRegistrationClosedByDate;
   const isOnline = (hackathon as any)?.isOnline !== undefined
     ? Boolean((hackathon as any).isOnline)
     : !hackathon.place && (!hackathon.city || /online/i.test(String(hackathon.city)));
@@ -223,17 +260,17 @@ const HackathonDetailsPage: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow-lg ${
-              isClosed
+              isClosedEffective
                 ? "bg-gradient-to-r from-red-500 to-red-600 text-white"
                 : "bg-gradient-to-r from-green-400 to-emerald-500 text-white"
             }`}
           >
             <div
               className={`w-2 h-2 rounded-full ${
-                isClosed ? "bg-red-200" : "bg-green-200 animate-pulse"
+                isClosedEffective ? "bg-red-200" : "bg-green-200 animate-pulse"
               }`}
             />
-            {isClosed ? "Registration Closed" : "Open for Registration"}
+            {isClosedEffective ? "Registration Closed" : "Open for Registration"}
           </span>
           <h1 className="mt-8 text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight">
             {hackathon.name}
@@ -245,7 +282,7 @@ const HackathonDetailsPage: React.FC = () => {
           <CountdownTimer countdown={countdown} />
 
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            {isClosed ? (
+            {isClosedEffective ? (
               <div className="bg-gray-700/80 backdrop-blur-sm text-white font-bold text-lg px-10 py-5 rounded-2xl shadow-2xl">
                 Registration Closed
               </div>
@@ -386,7 +423,16 @@ const HackathonDetailsPage: React.FC = () => {
                       <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Hosted by
                       </p>
-                      <p className="text-gray-900 dark:text-white">{hackathon.createdBy}</p>
+                      <HostedBy uid={(hackathon as any).createdBy} />
+                    </div>
+                  </div>
+                )}
+                {(hackathon as any)?.closeDate && (
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30 rounded-xl">
+                    <Calendar className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Registration closes</p>
+                      <p className="text-gray-900 dark:text-white">{(hackathon as any).closeDate}</p>
                     </div>
                   </div>
                 )}

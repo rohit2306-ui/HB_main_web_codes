@@ -20,6 +20,7 @@ const Hosthackathon: React.FC = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [closeDate, setCloseDate] = useState("");
   const [place, setPlace] = useState("");
   const [city, setCity] = useState("");
   const [thumbnail, setThumbnail] = useState("");
@@ -101,6 +102,7 @@ const Hosthackathon: React.FC = () => {
         name: name.trim(),
         description: description.trim(),
         date: date || undefined,
+        closeDate: closeDate || undefined,
         place: place || undefined,
         city: city || undefined,
         theme: theme || undefined,
@@ -173,6 +175,19 @@ const Hosthackathon: React.FC = () => {
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-indigo-500"
+                />
+                <Calendar className="absolute right-3 top-3.5 w-5 h-5 text-gray-400" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Registration Close Date</label>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={closeDate}
+                  onChange={(e) => setCloseDate(e.target.value)}
                   className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-indigo-500"
                 />
                 <Calendar className="absolute right-3 top-3.5 w-5 h-5 text-gray-400" />
@@ -301,6 +316,7 @@ const Hosthackathon: React.FC = () => {
                 setName("");
                 setDescription("");
                 setDate("");
+                setCloseDate("");
                 setIsOnline(false);
                 setPlace("");
                 setCity("");
@@ -342,6 +358,11 @@ const Hosthackathon: React.FC = () => {
                 {date && (
                   <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
                     <Calendar className="w-4 h-4" /> {date}
+                  </span>
+                )}
+                {closeDate && (
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800">
+                    <Calendar className="w-4 h-4" /> Closes: {closeDate}
                   </span>
                 )}
                 <span

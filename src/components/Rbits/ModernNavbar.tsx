@@ -113,7 +113,13 @@ const ModernNavbar = ({ logo, logoAlt = "Logo", items, className = "", logoBg = 
         </ul>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+           <Link
+            to={"/my-hackathons"}
+            className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-800 text-white hover:bg-blue-600 transition-colors"
+          >
+            Host hackathon
+          </Link>
           <Link
             to={"/host-hackathon"}
             className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full text-sm font-semibold bg-blue-800 text-white hover:bg-blue-600 transition-colors"
